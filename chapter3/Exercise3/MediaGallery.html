@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Media Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #fc895f;
+            margin: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            background: rgb(87, 172, 51);
+            padding: 20px;
+        }
+
+        h2 {
+            border-bottom: 2px solid #ccc;
+        }
+
+        img {
+            width: 100%;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>MediaGallery</h1>
+
+        <!-- 🎥 Video -->
+        <h2>วิดีโอ</h2>
+        <video width="100%" controls>
+            <source src="Meaia/hawk.mp4" type="video/mp4">
+            เสียงเหยี่ยวรอง
+        </video>
+
+        <!-- 🔊 Audio -->
+        <h2>เสียง</h2>
+        <audio controls>
+            <source src="Meaia/gryffin.mp3" type="audio/mpeg">
+            เสียงกริฟฟิน
+        </audio>
+
+        <!-- 🖼 Responsive Images -->
+        <h2>รูปภาพ</h2>
+
+        <img src="Meaia/hawk-640.jpg"
+            srcset="Meaia/hawk-640.jpg 640w,
+            Meaia/hawk-1280.jpg 1280w,
+            Meaia/hawk-1920.jpg 1920w"
+        sizes="(max-width: 768px) 100vw,(max-width: 1366px) 800px,1200px" alt="รูปภาพเหยี่ยว">
+
+    </div>
+
+</body>
+
+</html>

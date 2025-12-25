@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Card</title>
+
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-family: Arial, sans-serif;
+        }
+
+        .card {
+            width: 340px;
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-12px);
+        }
+
+        /* Header */
+        .header {
+            height: 120px;
+            background: linear-gradient(135deg, #ff8c42, #ff3c83);
+            position: relative;
+        }
+
+        .card img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 5px solid white;
+            position: absolute;
+            left: 50%;
+            bottom: -65px;
+            transform: translateX(-50%);
+            background: white;
+        }
+
+        .content {
+            padding: 80px 20px 25px;
+            text-align: center;
+        }
+
+        .content h2 {
+            margin: 5px 0;
+            color: #333;
+        }
+
+        .role {
+            font-size: 14px;
+            color: white;
+            background: #667eea;
+            display: inline-block;
+            padding: 6px 18px;
+            border-radius: 20px;
+            margin: 10px 0;
+        }
+
+        .content p {
+            color: #666;
+            margin: 6px 0;
+            font-size: 14px;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background: #eee;
+            margin: 20px 0;
+        }
+
+        .skills {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .skills span {
+            background: #f0f0f0;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        .social {
+            margin-top: 20px;
+        }
+
+        .social a {
+            display: inline-block;
+            margin: 0 8px;
+            width: 38px;
+            height: 38px;
+            line-height: 38px;
+            border-radius: 50%;
+            background: #764ba2;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .social a:hover {
+            background: #ff3c83;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <div class="header">
+            <img src="Meaia/Tinnakorn.jpg" alt="Profile">
+        </div>
+
+        <div class="content">
+            <h2>ทินกร ประโยชน์มี</h2>
+            <div class="role">IT Student</div>
+
+            <p>สนใจ Web Development</p>
+            <p>ชอบออกแบบเว็บ + งานสร้างสรรค์</p>
+
+            <hr>
+
+            <div class="skills">
+                <span>HTML</span>
+                <span>CSS</span>
+                <span>JavaScript</span>
+                <span>UI Design</span>
+            </div>
+
+            <div class="social">
+                <a href="https://www.facebook.com/share/1XkEAdRwR6/" target="_blank">F</a>
+                <a href="https://github.com/67280002-bit/wedevit" target="_blank">GH</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
