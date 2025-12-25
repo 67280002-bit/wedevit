@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Post - HTML5 Semantic Example</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px;
+      background: linear-gradient(135deg,#dce9ff,#f8fbff);
+      line-height: 1.7;
+    }
+
+    header, nav, main, article, section, aside, footer {
+      background: white;
+      padding: 25px;
+      margin-bottom: 25px;
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      transition: 0.3s ease;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      background: #ffffffc9;
+      backdrop-filter: blur(6px);
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #005fcc;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: 0.25s;
+    }
+
+    nav a:hover {
+      background: #005fcc;
+      color: white;
+    }
+
+    article header h2 {
+      margin-top: 0;
+      font-size: 1.9em;
+      color: #003b7b;
+    }
+
+    section h3 {
+      color: #0050a8;
+      margin-top: 0;
+      border-left: 5px solid #0074d4;
+      padding-left: 12px;
+    }
+
+    figure {
+      margin: 25px 0;
+      text-align: center;
+    }
+
+    figure img {
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+    }
+
+    figcaption {
+      margin-top: 8px;
+      font-style: italic;
+      color: #6d6d6d;
+    }
+
+    aside {
+      background: #e8f9f1;
+      border-left: 6px solid #00b893;
+    }
+
+    aside h3 {
+      margin-top: 0;
+      color: #009c77;
+    }
+
+    footer {
+      text-align: center;
+      background: #002e63;
+      color: white;
+      padding: 28px;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>My Tech Blog</h1>
+    <p>เว็บบล็อกสำหรับแบ่งปันความรู้ด้าน Web Development</p>
+  </header>
+
+  <nav>
+    <a href="#">หน้าแรก</a>
+    <a href="#">บทความ</a>
+    <a href="#">ติดต่อ</a>
+  </nav>
+
+  <main>
+    <article>
+      <header>
+        <h2>10 สถานที่ท่องเที่ยวอุดรธานี ที่ต้องไปสักครั้ง</h2>
+        <p>
+          เขียนโดย <strong>สุวิมล เพชรกลับ</strong> |
+          <time datetime="2025-02-01">1 กุมภาพันธ์ 2025</time>
+        </p>
+      </header>
+
+      <section>
+        <h3>อุดรธานี เมืองใหญ่แห่งอีสานเหนือ</h3>
+        <p>
+          จังหวัดอุดรธานีเป็นหนึ่งในเมืองท่องเที่ยวสำคัญของภาคอีสาน เต็มไปด้วยประวัติศาสตร์ วัฒนธรรม อาหารอร่อย และแลนด์มาร์คท่องเที่ยวที่สวยงาม ทำให้เป็นจังหวัดที่นักท่องเที่ยวเดินทางมาเยือนตลอดทั้งปี
+        </p>
+      </section>
+
+      <section>
+        <h3>1. ทุ่งดอกไม้ป่าภูฝอยลม</h3>
+        <p>
+          ไฮไลต์ช่วงปลายปีคือทุ่งดอกไม้หลากสี ที่บานสะพรั่งเต็มพื้นที่ เหมาะสำหรับถ่ายภาพเช็กอินสุดๆ บรรยากาศสดชื่นเย็นสบาย
+        </p>
+        <figure>
+          <img src="https://via.placeholder.com/900x350?text=Phu+Foi+Lom" alt="ทุ่งดอกไม้ภูฝอยลม" />
+          <figcaption>ดอกไม้หลากสีที่ภูฝอยลม</figcaption>
+        </figure>
+      </section>
+
+      <section>
+        <h3>2. วัดป่าภูก้อน</h3>
+        <p>
+          วัดป่าภูก้อนเป็นวัดที่ตั้งอยู่ท่ามกลางธรรมชาติงดงาม องค์พระพุทธไสยาสน์ทำจากหินอ่อนขาวสวยตระการตา บรรยากาศสงบมาก เหมาะแก่การพักใจ
+        </p>
+        <figure>
+          <img src="https://via.placeholder.com/900x350?text=Wat+Pa+Phu+Kon" alt="วัดป่าภูก้อน" />
+          <figcaption>พระพุทธไสยาสน์หินอ่อน ณ วัดป่าภูก้อน</figcaption>
+        </figure>
+      </section>
+
+      <section>
+        <h3>3. หนองประจักษ์</h3>
+        <p>
+          แลนด์มาร์คใจกลางเมืองอุดรธานี สวนสาธารณะร่มรื่น เหมาะกับการเดินเล่น ปั่นจักรยาน ชมวิวพระอาทิตย์ตก
+        </p>
+      </section>
+
+      <section>
+        <h3>4. UD Town</h3>
+        <p>
+          แหล่งช้อปปิ้ง เดินเล่นตอนกลางคืน ร้านอาหารเพียบ บรรยากาศดีมาก โดยเฉพาะโซนลานน้ำพุ
+        </p>
+      </section>
+
+      <section>
+        <h3>5. วัดโพธิสมภรณ์</h3>
+        <p>
+          วัดสำคัญประจำจังหวัด มีความงดงามของสถาปัตยกรรมผสมผสานแบบไทย-ล้านนา
+        </p>
+      </section>
+
+      <footer>
+        <p>แท็ก: อุดรธานี, ท่องเที่ยว, รีวิวจังหวัด</p>
+      </footer>
+    </article>
+
+    <aside>
+      <h3>บทความล่าสุด</h3>
+      <ul>
+        <li><a href="#">พื้นฐาน CSS Grid Layout</a></li>
+        <li><a href="#">รู้จัก JavaScript ES6</a></li>
+        <li><a href="#">วิธีเริ่มต้นเขียนเว็บไซต์</a></li>
+      </ul>
+    </aside>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 My Tech Blog — All Rights Reserved</p>
+  </footer>
+
+</body>
+</html>

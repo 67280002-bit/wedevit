@@ -1,101 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlogPost</title>
-</head>
-<body>
-<!-- ✅ ใช้ Semantic (บอกความหมายชัดเจน) -->
-<header>
-  <nav>
-    <a href="/">หน้าแรก</a>
-  </nav>
-</header>
-<main>
-  <article>
-    <h2>หัวข้อบทความ</h2>
-    <p>เนื้อหา...</p>
-  </article>
-</main>
-<footer>
-  <p>Copyright 2025</p>
-</footer>
-
-<!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>บล็อกของฉัน</title>
+  <title>Blog Post</title>
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      background:#f2f2f2;
+      margin:0;
+    }
+    header{
+      background:#663300;
+      color:white;
+      padding:15px;
+      text-align:center;
+    }
+    .content{
+      width:800px;
+      margin:20px auto;
+      background:white;
+      padding:20px;
+    }
+    img{
+      width:100%;
+      margin:15px 0;
+    }
+    footer{
+      background:#663300;
+      color:white;
+      text-align:center;
+      padding:10px;
+    }
+  </style>
 </head>
+
 <body>
-  <!-- ส่วนหัวของเว็บไซต์ -->
-  <header>
-    <h1>บล็อกเทคโนโลยี</h1>
-    <p>แหล่งรวมความรู้ด้าน Web Development</p>
-    
-    <!-- เมนูนำทาง -->
-    <nav>
-      <ul>
-        <li><a href="/">หน้าแรก</a></li>
-        <li><a href="/about">เกี่ยวกับเรา</a></li>
-        <li><a href="/contact">ติดต่อ</a></li>
-      </ul>
-    </nav>
-  </header>
 
-  <!-- เนื้อหาหลักของหน้า -->
-  <main>
-    <!-- บทความที่ 1 -->
-    <article>
-      <header>
-        <h2>รู้จักกับ HTML5 Semantic Elements</h2>
-        <p>เขียนโดย <strong>นิกร</strong> | วันที่ 15 มกราคม 2025</p>
-      </header>
-      
-      <section>
-        <h3>HTML5 คืออะไร?</h3>
-        <p>HTML5 เป็นเวอร์ชันล่าสุดของ HTML ที่เพิ่ม Semantic Elements เข้ามา...</p>
-      </section>
-      
-      <section>
-        <h3>ทำไมต้องใช้ Semantic?</h3>
-        <p>การใช้ Semantic Elements ช่วยให้เว็บไซต์มีโครงสร้างที่ชัดเจน...</p>
-        
-        <figure>
-          <img src="semantic-diagram.png" alt="แผนภาพ Semantic HTML">
-          <figcaption>รูปที่ 1 โครงสร้าง Semantic HTML</figcaption>
-        </figure>
-      </section>
-      
-      <footer>
-        <p>แท็ก HTML, Web Development, Frontend</p>
-      </footer>
-    </article>
+<header>
+  <h1>Blog ท่องเที่ยว</h1>
+</header>
 
-    <!-- Sidebar เนื้อหาเสริม -->
-    <aside>
-      <h3>บทความแนะนำ</h3>
-      <ul>
-        <li><a href="#">CSS Flexbox เบื้องต้น</a></li>
-        <li><a href="#">JavaScript สำหรับมือใหม่</a></li>
-      </ul>
-    </aside>
+<div class="content">
+  <h2>ท่องเที่ยวอุดรธานี</h2>
+  <p><b>วันที่:</b> 25 ธันวาคม 2567</p>
 
-  </main>
+  <img src="Exercise2/udon1.jpg" alt="ภาพท่องเที่ยวอุดรธานี" width="300">
 
-  <!-- ส่วนท้ายของเว็บ -->
-  <footer>
-    <p>&copy; 2025 บล็อกเทคโนโลยี. All rights reserved.</p>
-    <nav>
-      <a href="/privacy">นโยบายความเป็นส่วนตัว</a> |
-      <a href="/terms">เงื่อนไขการใช้งาน</a>
-    </nav>
-  </footer>
+  <p>
+    อุดรธานีเป็นจังหวัดที่มีสถานที่ท่องเที่ยวที่สวยงามและมีเอกลักษณ์
+    เหมาะสำหรับการท่องเที่ยวเชิงธรรมชาติและวัฒนธรรม
+  </p>
 
-</body>
-</html>
+  <p>
+    สถานที่ที่ได้รับความนิยม เช่น ทะเลบัวแดง คำชะโนด และพิพิธภัณฑ์เมืองอุดรธานี
+  </p>
+</div>
+
+<footer>
+  <p>© 2025 Blog Post</p>
+</footer>
 
 </body>
 </html>

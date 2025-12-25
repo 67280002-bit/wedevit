@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Form</title>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      max-width: 700px;
+      margin: auto;
+      padding: 25px;
+      background: #f0f6ff;
+      line-height: 1.6;
+    }
+
+    h1 {
+      text-align: center;
+      color: #003b7b;
+    }
+
+    form {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    label {
+      font-weight: 600;
+      color: #003b7b;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #c7d7e8;
+      font-size: 1em;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #005fcc;
+      box-shadow: 0 0 6px rgba(0,95,204,0.25);
+    }
+
+    button {
+      width: 180px;
+      padding: 12px;
+      font-size: 1.1em;
+      background: #005fcc;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    button:hover {
+      background: #00489e;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Contact Form</h1>
+
+  <form>
+    <div>
+      <label for="name">ชื่อ</label>
+      <input type="text" id="name" placeholder="กรอกชื่อ" required>
+    </div>
+
+    <div>
+      <label for="email">อีเมล</label>
+      <input type="email" id="email" placeholder="example@email.com" required>
+    </div>
+
+    <div>
+      <label for="topic">หัวข้อ</label>
+      <input type="text" id="topic" placeholder="เรื่องที่ต้องการติดต่อ" required>
+    </div>
+
+    <div>
+      <label for="message">ข้อความ</label>
+      <textarea id="message" rows="6" placeholder="กรอกข้อความที่นี่..." required></textarea>
+    </div>
+
+    <button type="submit">ส่งข้อความ</button>
+  </form>
+
+</body>
+</html>

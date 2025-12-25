@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>หน้าติดต่อ - UdonThani Travel Blog</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      max-width: 950px;
+      margin: auto;
+      padding: 25px;
+      background: linear-gradient(135deg,#dce9ff,#f8fbff);
+      line-height: 1.7;
+    }
+
+    header, nav, main, footer {
+      background: white;
+      padding: 25px;
+      margin-bottom: 25px;
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #005fcc;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: 0.25s;
+    }
+
+    nav a:hover {
+      background: #005fcc;
+      color: white;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #003b7b;
+      border-left: 5px solid #0074d4;
+      padding-left: 12px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      background: #f5f9ff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+
+    label {
+      font-weight: 600;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #c7d7e8;
+      font-size: 1em;
+      transition: 0.2s;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border: 1px solid #0074d4;
+      box-shadow: 0 0 6px rgba(0,116,212,0.25);
+    }
+
+    button {
+      padding: 12px 20px;
+      background: #005fcc;
+      color: white;
+      border: none;
+      font-size: 1.1em;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 180px;
+    }
+
+    button:hover {
+      background: #004a9e;
+    }
+
+    footer {
+      text-align: center;
+      background: #002e63;
+      color: white;
+      padding: 22px;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ติดต่อเรา</h1>
+    <p>มีคำถาม ข้อเสนอแนะ หรืออยากร่วมงานกับเรา ส่งข้อความได้เลย!</p>
+  </header>
+
+  <nav>
+    <a href="#">หน้าแรก</a>
+    <a href="#">บทความ</a>
+    <a href="#">ติดต่อ</a>
+  </nav>
+
+  <main>
+    <h2>แบบฟอร์มติดต่อ</h2>
+    <form>
+      <div>
+        <label for="name">ชื่อของคุณ</label>
+        <input type="text" id="name" placeholder="กรอกชื่อ" required>
+      </div>
+
+      <div>
+        <label for="email">อีเมล</label>
+        <input type="email" id="email" placeholder="example@email.com" required>
+      </div>
+
+      <div>
+        <label for="subject">เรื่องที่ต้องการติดต่อ</label>
+        <input type="text" id="subject" placeholder="หัวข้อข้อความ" required>
+      </div>
+
+      <div>
+        <label for="message">ข้อความ</label>
+        <textarea id="message" rows="6" placeholder="พิมพ์ข้อความที่นี่..." required></textarea>
+      </div>
+
+      <button type="submit">ส่งข้อความ</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 UdonThani Travel Blog — All Rights Reserved</p>
+  </footer>
+
+</body>
+</html>
