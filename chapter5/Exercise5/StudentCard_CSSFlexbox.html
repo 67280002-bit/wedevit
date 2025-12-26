@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Shoe Shop</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f2f2f2;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .listing-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* Card */
+        .shoe-card {
+            width: 280px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .shoe-card:hover {
+            transform: translateY(-8px);
+        }
+
+        /* Image */
+        .card-image {
+            position: relative;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        /* Badge */
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff4757;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        /* Content */
+        .card-content {
+            padding: 15px;
+        }
+
+        .price {
+            font-size: 18px;
+            color: #e84118;
+            font-weight: bold;
+        }
+
+        .name {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .detail {
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>👟 Shoe Store</h1>
+
+    <div class="listing-container">
+
+        <!-- 1 -->
+        <a href="https://www.nike.com/th/t/%E0%B8%A3%E0%B8%AD%E0%B8%87%E0%B9%80%E0%B8%97%E0%B9%89%E0%B8%B2%E0%B8%9C%E0%B8%B9%E0%B9%89-air-max-muse-se-KDWbkHo9/IB4396-001"
+            target="_blank">
+            <div class="shoe-card">
+                <div class="card-image">
+                    <img src="meaia/WMNS+NIKE+AIR+MAX+MUSE+SE+-+2.avif" alt="">
+                    <span class="badge">NIKE</span>
+                </div>
+                <div class="card-content">
+                    <div class="price">฿6,000</div>
+                    <div style="color: black;" class="name">Nike Air Max Muse SE</div>
+                    <div class="detail">รองเท้าวิ่ง</div>
+                </div>
+            </div>
+        </a>
+
+        <!-- 2 -->
+        <a
+            href="https://www.adidas.co.th/th/%E0%B8%A3%E0%B8%AD%E0%B8%87%E0%B9%80%E0%B8%97%E0%B9%89%E0%B8%B2-ultraboost-5-strung/JH8188.html">
+            <div class="shoe-card">
+                <div class="card-image">
+                    <img src="meaia/Ultraboost_5_Strung_JH8188_06_standard.avif" alt="">
+                    <span class="badge">adidas</span>
+                </div>
+                <div class="card-content">
+                    <div class="price">฿8,000</div>
+                    <div style="color: black;" class="name">Ultraboost 5 Strung</div>
+                    <div class="detail">รองเท้ากีฬา</div>
+                </div>
+            </div>
+        </a>
+
+        <!-- 3 -->
+        <a href="https://www.onitsukatiger.com/th/th-th/product/mexico-66-driving/1183c306.001?srsltid=AfmBOoqYvTdqILs5FR9hq4w_zL06UUPcPSAR_LSjsXtJ2C0-YEiZu-Jf">
+        <div class="shoe-card">
+            <div class="card-image">
+                <img src="meaia/Onitsuka.webp" alt="">
+                <span class="badge">Onitsuka</span>
+            </div>
+            <div class="card-content">
+                <div class="price">฿8,300</div>
+                <div style="color: black;"class="name">Onitsuka Tiger MEXICO 66 DRIVING</div>
+                <div class="detail">รองเท้าแข่งรถ</div>
+            </div>
+        </div>
+        </a>
+
+        <!-- 4 -->
+         <a href="https://www.newbalance.co.th/new-balance-sc-elite-v5-men-s-running-shoes-white-neon-green-10.html?color=7">
+        <div class="shoe-card">
+            <div class="card-image">
+                <img src="meaia/9991-NEWMRCELEM500W10H-2.webp" alt="">
+                <span class="badge">NEW</span>
+            </div>
+            <div class="card-content">
+                <div class="price">฿8,500</div>
+                <div style="color: black;" class="name">New Balance SC Elite v5 Men's Running Shoes</div>
+                <div class="detail">รองเท้าวิ่ง</div>
+            </div>
+        </div>
+        </a>
+
+        <!-- 5 -->
+         <a href="https://www.nike.com/th/t/%E0%B8%A3%E0%B8%AD%E0%B8%87%E0%B9%80%E0%B8%97%E0%B9%89%E0%B8%B2%E0%B8%9A%E0%B8%B2%E0%B8%AA%E0%B9%80%E0%B8%81%E0%B9%87%E0%B8%95%E0%B8%9A%E0%B8%AD%E0%B8%A5-gt-future-ep-YOdyilHD/FZ5591-002">
+        <div class="shoe-card">
+            <div class="card-image">
+                <img src="meaia/G.T.+FUTURE+EP.avif" alt="">
+                <span class="badge">NIKE</span>
+            </div>
+            <div class="card-content">
+                <div class="price">฿6,900</div>
+                <div style="color: black;" class="name">Nike G.T. Future EP</div>
+                <div class="detail">รองเท้าบาส</div>
+            </div>
+        </div>
+        </a>
+
+        <!-- 6 -->
+         <a href="https://www.gucci.com/th/th/pr/men/shoes-for-men/sandals-slides-for-men/slides-for-men/mens-slide-sandal-with-interlocking-g-p-831275DTN001000">
+        <div class="shoe-card">
+            <div class="card-image">
+                <img src="meaia/831275_DTN00_1000_002_100_0000_Light--Mens-slide-sandal-with-Interlocking-G.avif" alt="">
+                <span class="badge">GUCCI</span>
+            </div>
+            <div class="card-content">
+                <div class="price">฿32,000</div>
+                <div style="color: black;" class="name">Men's slide sandal with Interlocking G</div>
+                <div class="detail">รองเท้าลำลอง</div>
+            </div>
+        </div>
+        </a>
+
+    </div>
+
+</body>
+
+</html>
