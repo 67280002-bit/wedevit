@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ข้อมูลติดต่อ | มวยไทยไชยา</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #111;
+            color: #fff;
+        }
+
+        nav {
+            background: #000;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: #d4af37;
+            text-decoration: none;
+            margin: 0 12px;
+        }
+
+        nav a:hover {
+            color: #fff;
+        }
+
+        .section-title {
+            color: #d4af37;
+        }
+
+        .contact-card {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 30px;
+            height: 100%;
+        }
+
+        .form-control,
+        .form-control:focus {
+            background: #000;
+            color: #fff;
+            border: 1px solid #9c9c9c;
+        }
+
+        .btn-gold {
+            background: #d4af37;
+            color: #000;
+            border: none;
+        }
+
+        .btn-gold:hover {
+            background: #b8962e;
+            color: #000;
+        }
+
+        /* ✅ เพิ่มตรงนี้ */
+        .navbar .navbar-brand,
+        .navbar .nav-link {
+            color: #d4af37 !important;
+        }
+
+        .navbar .nav-link:hover,
+        .navbar .navbar-brand:hover {
+            color: #ffffff !important;
+        }
+
+        .navbar .nav-link.active {
+            color: #ffffff !important;
+            font-weight: 500;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">มวยไทยไชยา</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="index.html">หน้าแรก</a>
+                <a class="nav-link" href="history.html">ประวัติ</a>
+                <a class="nav-link" href="identity.html">เอกลักษณ์</a>
+                <a class="nav-link" href="technique.html">ท่าพื้นฐาน</a>
+                <a class="nav-link" href="culture.html">วัฒนธรรม</a>
+                <a class="nav-link active" href="contact.html">ติดต่อ</a>
+                <a class="nav-link" href="reference.html">แหล่งอ้างอิง</a>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <section class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="section-title">ข้อมูลติดต่อ</h2>
+            <p class="text-muted">
+                หากต้องการสอบถามข้อมูลเพิ่มเติมเกี่ยวกับมวยไทยไชยา
+                หรือให้ข้อเสนอแนะเพื่อการพัฒนาเว็บไซต์ สามารถติดต่อได้ตามช่องทางด้านล่าง
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <!-- LEFT : CONTACT INFO -->
+            <div class="col-lg-5">
+                <div class="contact-card">
+                    <h4 class="section-title mb-4">ช่องทางการติดต่อ</h4>
+
+                    <p>
+                        เว็บไซต์นี้จัดทำขึ้นเพื่อการศึกษาเกี่ยวกับศิลปะการต่อสู้มวยไทยไชยา
+                        ซึ่งเป็นหนึ่งในมรดกทางวัฒนธรรมที่ทรงคุณค่าของประเทศไทย
+                    </p>
+                    <p>
+                        <img src="image/71919061_905080953196720_238033010304221184_n (1).jpg" alt="ผู้จัดทำ"
+                            class="img-fluid rounded mb-3">
+                    </p>
+                    <p>
+                        <i class="bi bi-person-fill text-warning"></i>
+                        ผู้จัดทำ : นายทินกร ประโยชน์มี
+                    </p>
+
+                    <p>
+                        <i class="bi bi-envelope-fill text-warning"></i>
+                        Email : 67280002@stu.eau.ac.th
+                    </p>
+
+                    <p>
+                        <i class="bi bi-telephone-fill text-warning"></i>
+                        โทรศัพท์ : 09X-XXX-XXXX
+                    </p>
+
+                    <p>
+                        <i class="bi bi-geo-alt-fill text-warning"></i>
+                        มหาวิทยาลัยอีสเทิร์นเอเชีย จังหวัดประทุมธานี
+                    </p>
+
+                    <hr>
+
+                    <p class="text-muted">
+                        * ข้อมูลทั้งหมดใช้เพื่อประกอบการเรียนการสอน
+                        ไม่แสวงหาผลกำไรทางการค้า
+                    </p>
+                </div>
+            </div>
+
+            <!-- RIGHT : CONTACT FORM -->
+            <div class="col-lg-7">
+                <div class="contact-card">
+                    <h4 class="section-title mb-4">แบบฟอร์มติดต่อ</h4>
+
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">ชื่อ - นามสกุล</label>
+                            <input type="text" class="form-control" placeholder="กรุณากรอกชื่อ">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">อีเมล</label>
+                            <input type="email" class="form-control" placeholder="example@email.com">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">หัวข้อที่ต้องการติดต่อ</label>
+                            <select class="form-control">
+                                <option>สอบถามข้อมูล</option>
+                                <option>ให้ข้อเสนอแนะ</option>
+                                <option>แจ้งแก้ไขเนื้อหา</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">ข้อความ</label>
+                            <textarea class="form-control" rows="5" placeholder="พิมพ์ข้อความของคุณ"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-gold px-4">
+                            ส่งข้อความ
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+</html>
