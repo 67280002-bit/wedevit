@@ -1,150 +1,361 @@
-<!-- CSS เพิ่ม/แทนส่วน .shirt-img เดิมทั้งหมด -->
-<style>
-/* รูปเสื้อ */
-.shirt-img{
-    width:80px;
-    height:auto;
-    margin:6px;
-    border-radius:12px;
-    cursor:pointer;
-    transition:transform .25s ease;
-    box-shadow:0 4px 10px rgba(0,0,0,.12);
-    object-fit:cover;
-}
+<!DOCTYPE html>
+<html lang="th">
 
-.shirt-img:hover{
-    transform:scale(1.08);
-}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Trang Trip 3 วัน 2 คืน</title>
 
-/* คอม */
-@media (min-width:768px){
-    .shirt-img{
-        width:120px;
-    }
-}
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-/* มือถือ */
-@media (max-width:767px){
-    .shirt-img{
-        width:70px;
-        margin:4px;
-    }
-}
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
 
-/* การ์ดหัวข้อแนะนำ */
-.recommend-card{
-    background:linear-gradient(135deg,#4facfe,#00c6fb);
-    color:white;
-    border-radius:20px;
-    overflow:hidden;
-}
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            margin: 0;
+            position: relative;
+        }
 
-.recommend-content{
-    padding:25px;
-}
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
 
-.recommend-content h3{
-    font-weight:700;
-    margin-bottom:15px;
-}
+            background:
+                linear-gradient(rgba(255, 255, 255, .55), rgba(255, 255, 255, .55)),
+                url("image/images6.jpg") center center/cover no-repeat;
 
-.recommend-content ul{
-    padding-left:20px;
-}
+            z-index: -1;
+        }
 
-.recommend-content li{
-    margin-bottom:10px;
-}
-</style>
+        .header {
+            position: relative;
+            background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') center center/cover no-repeat;
+            min-height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
 
-<!-- Header ใหม่ -->
-<div class="header">
-    <div>
+        .header::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, .45);
+        }
+
+        .header>* {
+            position: relative;
+            z-index: 2;
+        }
+
+        .container {
+            max-width: 900px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, .08);
+            margin-bottom: 25px;
+            transition: .3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .card li {
+            margin-bottom: 12px;
+            line-height: 1.8;
+        }
+
+        h2 {
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 15px;
+        }
+
+        a.btn {
+            border-radius: 30px;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 30px;
+            background: #0084ff;
+            color: white;
+            border-radius: 20px 20px 0 0;
+        }
+
+        @media (max-width:768px) {
+
+            .header {
+                min-height: 220px;
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            .card {
+                border-radius: 15px;
+            }
+
+            .card li {
+                font-size: .95rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+        }
+
+        /* การ์ดหัวข้อแนะนำ */
+        .recommend-card {
+            background: linear-gradient(135deg, #0389ff, #70e0ff);
+            color: white;
+        }
+
+        .recommend-content {
+            padding: 20px;
+        }
+
+        /* รูปเสื้อ */
+        .shirt-img {
+            width: 75px;
+            /* ขนาดมือถือ */
+            height: auto;
+            margin: 5px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all .3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .15);
+        }
+
+        .shirt-img:hover {
+            transform: scale(1.08);
+        }
+
+        /* จอคอม */
+        @media (min-width:768px) {
+            .shirt-img {
+                width: 120px;
+            }
+        }
+
+        /* จอเล็กมาก */
+        @media (max-width:420px) {
+            .shirt-img {
+                width: 65px;
+                margin: 3px;
+            }
+        }
+
+        /* รูปใน Modal */
+        #previewImage {
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="header">
         <h1>🌴 ทริปตรัง 3 วัน 2 คืน</h1>
         <p>สำหรับ 8 คน | ออกเดินทางจากกรุงเทพฯ&อุดรฯ ✈️</p>
     </div>
-</div>
 
-<!-- บรรทัดจองตั๋วเครื่องบิน (แก้ </a> เกิน) -->
-<li>✈️ บินจากกรุงเทพฯ&อุดรฯ → ตรัง : จองตั๋วช่วงต้นเดือนกันยายน จองเป็นช่วงเช้า (ราคาไป-กลับประมาณ 3,000 บาท/คน)
-    <a href="https://www.traveloka.com" target="_blank">จองตั๋วเครื่องบิน</a>
-</li>
+    <div class="container mt-5">
 
-<!-- ส่วนหัวข้อแนะนำ -->
-<h2 class="text-info">👕 หัวข้อแนะนำ</h2>
+        <!-- Day 1 -->
+        <h2 class="text-primary">📅 วันที่ 1: กรุงเทพฯ&อุดรฯ → ตรัง → ที่พัก </h2>
+        <div class="card p-3">
+            <ul>
+                <li>✈️ บินจากกรุงเทพฯ&อุดรฯ → ตรัง : จองตั๋วช่วงต้นเดือนกันยายน จองเป็นช่วงเช้า (ราคาไป-กลับประมาณ 3,000
+                    บาท/คน) <a
+                        href="https://www.traveloka.com/th-th/flight/airport/mwx?_redirected=1&id=713097139859806599&adloc=th-th&kw=713097139859806599_&gmt=&gn=g&gd=c&gdm=&gcid=729190675560&gdp=&gdt=&gap=&pc=1&aid=172741735599&wid=aud-2396415452107:dsa-2393365741578&fid=&gid=9215157&&utm_id=ujzhWu01&ad_id=729190675560&target_id=aud-2396415452107:dsa-2393365741578&click_id=CjwKCAjwpefSBhBvEiwAzyEtZ17RtcGPAzB7ThOBO6H7F7FQfPiX8tFIupvKsEJJzzgMkRGRm5jWShoCOAEQAvD_BwE&group_id=172741735599&gad_source=1&gad_campaignid=22124741508&gbraid=0AAAAADi60UnO4kTAq0XnzMnB-TvpDm-Bx&gclid=CjwKCAjwpefSBhBvEiwAzyEtZ17RtcGPAzB7ThOBO6H7F7FQfPiX8tFIupvKsEJJzzgMkRGRm5jWShoCOAEQAvD_BwE"
+                        target="_blank">จองตั๋วเครื่องบิน</a>
+                </li>
+                <li>🚗 เช่ารถ : เป็นรถ SUV : ประมาณ 1,500 +- 500 บาท/วัน <a
+                        href="https://xn--72caj6bgpf9eb9a5hcds2sze.com/" target="_blank">จองที่นี่</a></li>
+                <li>🏡 เข้าพัก: วันสบาย พูลวิลล่า ตรัง : 3ห้องนอน
 
-<div class="card recommend-card">
+                    📌ราคา5,500บ./คืน สำหรับ1-9ท่าน
+                    หากเกิน 9 บวกเพิ่ม 200บ./ท่าน
+                    สูงสุดไม่เกิน 15ท่าน
+                </li>
+                <li>🏡 เข้าพัก: วันสบาย พูลวิลล่า ตรัง :2ห้องนอน
+                    📌ราคา4,000บ. สำหรับ1-6ท่าน
+                    หากเกิน 6 บวกเพิ่ม 200บ./ท่าน
+                    สูงสุดไม่เกิน 8ท่าน
+                    <a
+                        href="https://www.google.com/search?sca_esv=8e9f13b930d05df0&authuser=2&sxsrf=AHTn8zqIqKMs89YvVCaqWojaeNfxbZRtng%3A1744203218933&q=%E0%B8%A7%E0%B8%B1%E0%B8%99%E0%B8%AA%E0%B8%9A%E0%B8%B2%E0%B8%A2%20%E0%B8%9E%E0%B8%B9%E0%B8%A5%E0%B8%A7%E0%B8%B4%E0%B8%A5%E0%B8%A5%E0%B9%88%E0%B8%B2%20%E0%B8%95%E0%B8%A3%E0%B8%B1%E0%B8%87%20wansabay%20poolvilla%20trang%20%E0%B8%AD%E0%B8%B3%E0%B9%80%E0%B8%A0%E0%B8%AD%20%E0%B8%AA%E0%B8%B4%E0%B9%80%E0%B8%81%E0%B8%B2&uds=ABqPDvwaFXcsU12o3MVVwiucg-keNJZYoLGZuRRtWo_61zjD2RirIV5b0A5UjqEpADDUhPQbZHn1CGH5r6BC1JpI2BEjJJ748J5g9AO1HKdC9WyDv1vceao1vBq-HY0Z4HspnXJeMg2Xs2x_RHl13VVahHGPsnehTJSStTnbzNs0NIvtc-GB_AQHdGHYRRYMNyqSgjfoOxf_IHLlVeIxB7u7dKSV4C_N-Sf2FH5j-QLCjUgcVU_a2Y76uke77Pwq4mJg_0I4P6Jo8WllTKCcyU7LHd9vGu9EGKz6FxWOhXShVIEejzOQH68vLrx1rAFGDPcgww0OCymi0JLeIKLCM4NtkwHHkPxgfMh2Yvjp7OR2AOcas-44OX6NMJUa8zWQC8UOJRNcZNsBX5NzKAr4heWDDR3b5RWBlAagGmsENmnQoJeHm9hq4IrBVjGHP6ylLakm3LfrK44xFJ_WMvWa2SnMPMNTC21zsCHj8h8wWLa1Znnn-4fL7xquBL3p6n8_tZqmxO8HfDDQpnkKELtQPyaN51ECihNi2Ra5vUxGGnHAUwnNMEV8r1FA_JNCXeoJ3EDRsBfyfmo1bl--9NkznoTLZFkAjaSXqgQuYbsyfLET_-x7ZSHUG5YFf8wmPx5A84pmfyF5XOdEsT3FG2EAPluPB4mbP0hv5Q&si=APYL9bspescNnT_dJc-tbSluK8ca6Mr4zw0rVye7YiZe0gxCE9k1oC7MlFvsXX0hv93whYTeGVjFlvXHYTEGFIvkTe39jW8fDiMvcVRqe0hw0w8fGKERST_v8dXKCIOdUlDkFaf5ZDPHT8yiqWXOdgA8tfVo6xVUvEQEy90H5P9eoaGr3kyQ8t1dEyeGFSCYTZo5LJJAr94T97VhML5aPJ4JOhzs7c8Ud539-IC12Y2O03n5k2rNHvkQmLEM8vUOzWw8uBJvKRUA&sa=X&ved=2ahUKEwin-p6q_8qMAxUkUGcHHTlECfYQk8gLegQIGhAB&ictx=1&biw=360&bih=654&dpr=3&fbclid=IwZXh0bgNhZW0CMTAAAR5CYhRLUdvxNdpmWcz7UcdJqSxFILjVytNYNdLPiOL-8s8qOMLHFh6yqfztNQ_aem_22j1spaBnIbILQ2J1BqasQ#ebo=0&h=AT1ULkTtXIvcruusbmVtqLIklyG01t_3LBtD2IaZWh6C9-ux_ykrOSH1wtoAUxKPtzncHDT2EaLJXZr-7Ljf4K-E7A_NTukbAwqCdBQO7k-L-JLc3JlX_nPTOwwvEc82TxqiNn6bwqFsTL7UG5GBrg">ดูรายละเอียด</a>
+                </li>
+                <li>🍽️ กินข้าวเย็น + ปิ้งย่าง / ปาร์ตี้ : ประมาณ 300-500 บาท/คน</li>
+                <li>🏊 เล่นน้ำในพูลวิลล่า</li>
+            </ul>
+        </div>
 
-    <div class="text-center pt-4">
+        <!-- Day 2 -->
+        <h2 class="text-success">🏝️ วันที่ 2: เกาะกระดาน + ทัวร์ดำน้ำ</h2>
+        <div class="card p-3">
+            <ul>
+                <li>🚗 เดินทางไปท่าเรือปากเมง</li>
+                <li>🚤 นั่งเรือไปเกาะกระดาน : เรือหางยาวเหมาลำ: ประมาณ 1,800 +- 200 บาท/ลำ/เที่ยว (นั่งได้ประมาณ 10 คน)
+                    * ตรงนี้สามารถตัดออกได้ *
+                    <a
+                        href="https://www.google.com/maps/place/%E0%B8%97%E0%B9%88%E0%B8%B2%E0%B9%80%E0%B8%A3%E0%B8%B7%E0%B8%AD%E0%B8%9B%E0%B8%B2%E0%B8%81%E0%B9%80%E0%B8%A1%E0%B8%87+%E0%B8%95%E0%B8%A3%E0%B8%B1%E0%B8%87+Pakmeng+Terminal+Andaman+Sea+Gateway/@7.4885064,99.3255426,37202m/data=!3m1!1e3!4m6!3m5!1s0x304de4d20918ddc1:0xd7bbd0a2af9a8e63!8m2!3d7.5070097!4d99.312213!16s%2Fg%2F11b67jfv4f!5m1!1e1?entry=ttu&g_ep=EgoyMDI2MDQxOS4wIKXMDSoASAFQAw%3D%3D">แผนที่</a>
+                </li>
+                <li>🤿 ดำน้ำดูปะการัง : ค่าใช้จ่ายประมาณ 800-1200 บาท/คน (แนะนำทัวร์ดำน้ำตื้น 4
+                    เกาะทะเลตรังด้วยเรือใหญ่จะคุ้มค่ากว่า *เฉพาะคนที่อยากไป*) <a
+                        href="https://www.ticket2attraction.com/th/discount-tickets/snorkeling-4-islands-in-trang-big-boat/?srsltid=AfmBOorYNcUC2Mve2vdp2ImgBIHktSvc6nNSGH-FBO-267NIenK39Qzh">ดูรายละเอียด</a>
+                </li>
+                <li>🏖️ เล่นน้ำ ถ่ายรูป บนเกาะกระดาน</li>
+                <li>🍱 กินอาหารกลางวัน (ปิกนิก / ร้านบนเกาะ)</li>
+                <li>📸 จุดถ่ายรูปสวยระดับโลก</li>
+            </ul>
+        </div>
 
-        <img src="image/Shirt-Trang1.jpg"
-             class="shirt-img"
-             alt="เสื้อทริปตรัง 1"
-             onclick="showImage(this.src)">
+        <!-- Day 3 -->
+        <h2 class="text-danger">🏁 วันที่ 3: กลับกรุงเทพฯ&อุดรฯ</h2>
+        <div class="card p-3">
+            <ul>
+                <li>☕ กินอาหารเช้า</li>
+                <li>🛍️ แวะซื้อของฝาก (เค้กตรัง / หมูย่างตรัง)</li>
+                <li>✈️ เดินทางกลับกรุงเทพฯ&อุดรฯ</li>
+            </ul>
+        </div>
 
-        <img src="image/Shirt-Trang2.png"
-             class="shirt-img"
-             alt="เสื้อทริปตรัง 2"
-             onclick="showImage(this.src)">
+        <!-- Total expenses -->
+        <h2 class="text-warning">💡 ค่าใช้จ่ายโดยรวม</h2>
+        <div class="card p-3">
+            <ul>
+                <li>🚗 ค่าเช่ารถ : ประมาณ 3,000 บาท/2 วัน</li>
+                <li>🏡 ค่าที่พัก : ประมาณ 8,800 บาท/2 คืน</li>
+                <li>✈️ ค่าตั๋วเครื่องบิน : ประมาณ 3,000 บาท/คน</li>
+                <li>🤿 ค่าดำน้ำ : ประมาณ 1,800-2,000 บาท/คน</li>
+                <li>🚤 ค่าเรือ : ประมาณ 500-2,000 บาท/ลำ/เที่ยว</li>
+                <li>🍽️ ค่าอาหาร : ประมาณ 2,000 บาท/คน</li>
+                <li>💡 ค่าใช้จ่ายหลักที่ต้องหาร : ประมาณ 11,000 บาท/คน (ค่าเช่ารถ/ค่าที่พัก/ค่าเรือ) *ตกคนละ : 1,375
+                    บาท/คน</li>
+                <li> ค่าใช้จ่ายส่วนตัว : ประมาณ 1,000-3,000 บาท/คน</li>
+                <li> สรุปค่าใช้จ่ายโดยรวมต่อคน : ประมาณ 8,000-11,000 บาท/คน</li>
+            </ul>
+        </div>
 
-        <img src="image/Shirt-Trang3.png"
-             class="shirt-img"
-             alt="เสื้อทริปตรัง 3"
-             onclick="showImage(this.src)">
+        <!-- Tips -->
+        <h2 class="text-warning">💡 กิจกรรมแนะนำเพิ่มเติม</h2>
+        <div class="card p-3">
+            <ul>
+                <li>🌅 ดูพระอาทิตย์ขึ้นที่ทะเล</li>
+                <li>🛶 พายคายัค</li>
+                <li>☕ คาเฟ่ในตรัง</li>
+            </ul>
+        </div>
+        <!-- Recommendation -->
+        <h2 class="text-info">👕 หัวข้อแนะนำ</h2>
 
-    </div>
+        <div class="card recommend-card">
 
-    <div class="recommend-content">
+            <div class="text-center pt-4">
 
-        <h3>🎽 เสื้อประจำทริป</h3>
+                <img src="image/Shirt-Trang1.jpg" class="shirt-img" alt="เสื้อแบบที่ 1" onclick="showImage(this.src)">
 
-        <p>
-            เพื่อให้ถ่ายรูปออกมาสวยและเป็นธีมเดียวกัน
-            แนะนำให้ทุกคนใส่เสื้อทีมในวันที่ไปเกาะกระดาน
-        </p>
+                <img src="image/Shirt-Trang2.png" class="shirt-img" alt="เสื้อแบบที่ 2" onclick="showImage(this.src)">
 
-        <ul>
-            <li>👕 เสื้อสีเดียวกันทั้งแก๊ง</li>
-            <li>🏝️ เหมาะสำหรับถ่ายรูปริมทะเล</li>
-            <li>📸 ดูเป็นทีมและเก็บเป็นความทรงจำ</li>
-            <li>💙 สามารถสั่งทำลายเฉพาะทริปได้</li>
-        </ul>
+                <img src="image/Shirt-Trang3.png" class="shirt-img" alt="เสื้อแบบที่ 3" onclick="showImage(this.src)">
 
-    </div>
-
-</div>
-
-<!-- วางไว้ก่อน </body> เท่านั้น -->
-<div class="modal fade" id="imageModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down modal-xl">
-        <div class="modal-content bg-dark border-0">
-
-            <div class="modal-header border-0">
-                <button type="button"
-                        class="btn-close btn-close-white"
-                        data-bs-dismiss="modal"></button>
             </div>
 
-            <div class="modal-body text-center">
-                <img id="previewImage"
-                     class="img-fluid rounded"
-                     style="max-height:85vh;">
+            <div class="recommend-content">
+
+                <h3>🎽 เสื้อประจำทริป</h3>
+
+                <p>
+                    เพื่อให้ถ่ายรูปออกมาสวยและเป็นธีมเดียวกัน
+                    แนะนำให้ทุกคนใส่เสื้อทีมในวันที่ไปเกาะกระดาน
+                </p>
+
+                <ul>
+                    <li>👕 เสื้อสีเดียวกันทั้งแก๊ง</li>
+                    <li>🏝️ เหมาะสำหรับถ่ายรูปริมทะเล</li>
+                    <li>📸 ดูเป็นทีมและเก็บเป็นความทรงจำ</li>
+                    <li>💙 สามารถสั่งทำลายเฉพาะทริปได้</li>
+                </ul>
+
             </div>
 
         </div>
+
+        <!-- Modal ขยายรูป -->
+        <div class="modal fade" id="imageModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down modal-xl">
+                <div class="modal-content bg-dark border-0">
+
+                    <div class="modal-header border-0">
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body text-center">
+                        <img id="previewImage" class="img-fluid rounded" alt="รูปเสื้อ">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="recommend-content">
+
+        </div>
+        <!-- Footer -->
+        <footer class="text-center mt-5 p-4 " style="background-color:#aadbff;">
+            <h5 style="color: #333;"> ✨ จัดทำทริปโดย ShogunMickey</h5>
+            <p style="color: #333;">📍 Trang Trip Planner | 3 วัน 2 คืน</p>
+            <p style="color: #333;">💙 วางแผนเพื่อการท่องเที่ยวและความสนุกของแก๊ง 8 คน</p>
+        </footer>
+
     </div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
 
-<script>
-function showImage(src){
-    document.getElementById("previewImage").src = src;
+        function showImage(src) {
 
-    const modal = new bootstrap.Modal(
-        document.getElementById("imageModal")
-    );
+            document.getElementById("previewImage").src = src;
 
-    modal.show();
-}
-</script>
+            const modal = new bootstrap.Modal(
+                document.getElementById("imageModal")
+            );
+
+            modal.show();
+
+        }
+
+    </script>
+</body>
+
+</html>
