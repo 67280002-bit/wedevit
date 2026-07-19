@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ดนตรีไทยเบื้องต้น — แคตาล็อกเครื่องดนตรี</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Noto+Serif+Thai:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['"Noto Serif Thai"','serif'],
+        body: ['Sarabun','sans-serif'],
+      },
+      colors: {
+        lacquer: { 50:'#FDF2F2', 100:'#F6E4E1', 500:'#8A2424', 700:'#5C1414', 900:'#3D0F0F' },
+        brass:   { 100:'#F3E9D2', 300:'#DEC58F', 500:'#C5A059', 700:'#8C6A1F' },
+        teak:    { 50:'#FBF7EF', 100:'#D9CFC2', 200:'#C5B9A8', 300:'#A6957F', 500:'#6B5740', 700:'#4A3825', 900:'#2A1E14' },
+        jade:    { 100:'#E3EBE3', 700:'#2F4538' },
+      }
+    }
+  }
+}
+</script>
+<style>
+  body { font-family:'Sarabun',sans-serif; }
+  .font-display { font-family:'Noto Serif Thai',serif; }
+  .line-clamp-2 { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .line-clamp-3 { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  #detail-panel { transition: transform 0.35s cubic-bezier(0.34,1.26,0.64,1), opacity 0.25s ease; }
+  #detail-panel.hidden-panel { transform:translateX(100%); opacity:0; pointer-events:none; }
+  .card-hover { transition: border-color 0.15s, transform 0.2s cubic-bezier(0.34,1.56,0.64,1); }
+  .card-hover:hover { border-color:#DEC58F; transform:translateY(-2px); }
+  .pill-active  { background:#5C1414; color:#DEC58F; border-color:#5C1414; }
+  .pill-default { background:#fff; color:#6B5740; border-color:#D9CFC2; }
+  .pill-default:hover { border-color:#C5A059; }
+  .waveform-bar { display:inline-block; width:3px; border-radius:2px; background:#C5A059; margin:0 1px; vertical-align:middle; }
+  @keyframes wavePulse { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(1.6)} }
+  .animate-wave span { animation: wavePulse 1.2s ease-in-out infinite; }
+  .animate-wave span:nth-child(2){animation-delay:.1s}
+  .animate-wave span:nth-child(3){animation-delay:.2s}
+  .animate-wave span:nth-child(4){animation-delay:.3s}
+  .animate-wave span:nth-child(5){animation-delay:.15s}
+  input[type=range]::-webkit-slider-thumb { background:#5C1414; }
+  .tag-chip { font-size:11px; padding:3px 10px; border-radius:999px; background:#F3E9D2; color:#8C6A1F; border:1px solid #DEC58F; }
+  .overlay { background:rgba(42,30,20,0.55); backdrop-filter:blur(2px); }
+  @media(max-width:768px){ #detail-panel.hidden-panel { transform:translateY(100%); } }
+</style>
+</head>
+<body class="bg-teak-50 text-teak-900 antialiased">
+
+<!-- ══ NAVBAR ══════════════════════════════════════════════════════ -->
+<header class="bg-white border-b-2 border-brass-500 sticky top-0 z-40">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <a href="#" onclick="showCatalogue()" class="flex items-center gap-3">
+      <div class="w-9 h-9 bg-lacquer-700 rounded-lg flex items-center justify-center text-lg">🪘</div>
+      <span class="font-display font-bold text-lg text-lacquer-700 tracking-wide hidden sm:block">ดนตรีไทยเบื้องต้น</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-7 text-sm font-semibold">
+      <a href="#" class="text-lacquer-700 border-b-2 border-lacquer-700 pb-0.5">เครื่องดนตรี</a>
+      <a href="#" class="text-teak-400 hover:text-lacquer-700 transition-colors">บทเรียน</a>
+      <a href="#" class="text-teak-400 hover:text-lacquer-700 transition-colors">โรงเรียน</a>
+      <a href="#" class="text-teak-400 hover:text-lacquer-700 transition-colors">บทความ</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="page2-auth.html" class="hidden sm:block text-sm text-teak-400 hover:text-lacquer-700 transition-colors font-medium">เข้าสู่ระบบ</a>
+      <a href="page2-auth.html" class="bg-lacquer-700 hover:bg-lacquer-900 text-brass-300 px-4 py-2 rounded-md text-sm font-semibold transition-colors">สมัครสมาชิก</a>
+    </div>
+  </div>
+</header>
+
+<!-- ══ HERO ═════════════════════════════════════════════════════════ -->
+<section class="bg-white border-b border-teak-100 py-12 px-4 text-center">
+  <div class="max-w-2xl mx-auto">
+    <p class="text-xs tracking-widest text-brass-700 uppercase font-medium mb-3" style="font-family:'Sarabun',sans-serif; letter-spacing:.12em;">
+      ● แนะนำเครื่องดนตรีไทย
+    </p>
+    <h1 class="font-display font-bold text-3xl sm:text-4xl text-lacquer-700 mb-3 leading-snug">
+      เลือกเครื่องดนตรีที่ใช่สำหรับคุณ
+    </h1>
+    <p class="text-teak-500 text-base mb-6">
+      สำรวจเครื่องดนตรีไทยทุกประเภท พร้อมข้อมูลประวัติ วิธีเล่น และราคาโดยประมาณ
+    </p>
+    <div class="flex items-center justify-center gap-1 h-10 animate-wave" id="heroWave"></div>
+  </div>
+</section>
+
+<!-- ══ CATEGORY FILTER PILLS ════════════════════════════════════════ -->
+<div class="bg-white border-b border-teak-100 sticky top-16 z-30 overflow-x-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex gap-2 min-w-max">
+    <button onclick="filterCat(null)"   id="cat-all"  class="pill-active  px-4 py-1.5 rounded-full text-sm font-medium border transition-colors">ทั้งหมด</button>
+    <button onclick="filterCat(3)"      id="cat-3"    class="pill-default px-4 py-1.5 rounded-full text-sm font-medium border transition-colors">เครื่องตี</button>
+    <button onclick="filterCat(1)"      id="cat-1"    class="pill-default px-4 py-1.5 rounded-full text-sm font-medium border transition-colors">เครื่องสาย</button>
+    <button onclick="filterCat(2)"      id="cat-2"    class="pill-default px-4 py-1.5 rounded-full text-sm font-medium border transition-colors">เครื่องเป่า</button>
+    <button onclick="filterCat(4)"      id="cat-4"    class="pill-default px-4 py-1.5 rounded-full text-sm font-medium border transition-colors">เครื่องดีด</button>
+    <button onclick="filterCat(5)"      id="cat-5"    class="pill-default px-4 py-1.5 rounded-full text-sm font-medium border transition-colors">เครื่องกระทบ</button>
+  </div>
+</div>
+
+<!-- ══ MAIN ══════════════════════════════════════════════════════════ -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <div class="flex gap-8">
+
+    <!-- SIDEBAR -->
+    <aside class="hidden lg:block w-56 shrink-0">
+      <div class="mb-6">
+        <label class="block text-xs font-semibold text-teak-400 mb-1 uppercase tracking-wide">ค้นหา</label>
+        <input id="searchBox" type="text" placeholder="ชื่อเครื่องดนตรี..."
+               oninput="applyFilters()"
+               class="w-full border border-teak-100 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-brass-500 focus:ring-1 focus:ring-brass-300 bg-white">
+      </div>
+      <div class="mb-6">
+        <p class="text-xs font-semibold text-teak-400 mb-2 uppercase tracking-wide">ระดับความยาก</p>
+        <div class="flex flex-col gap-1">
+          <button onclick="filterDiff(null)" id="diff-all" class="text-sm py-1.5 px-3 rounded-md text-left transition-colors bg-brass-100 text-brass-700 font-medium">ทุกระดับ</button>
+          <button onclick="filterDiff(1)"    id="diff-1"   class="text-sm py-1.5 px-3 rounded-md text-left transition-colors text-teak-500 hover:bg-teak-50">เริ่มต้น</button>
+          <button onclick="filterDiff(2)"    id="diff-2"   class="text-sm py-1.5 px-3 rounded-md text-left transition-colors text-teak-500 hover:bg-teak-50">ปานกลาง</button>
+          <button onclick="filterDiff(3)"    id="diff-3"   class="text-sm py-1.5 px-3 rounded-md text-left transition-colors text-teak-500 hover:bg-teak-50">สูง</button>
+        </div>
+      </div>
+      <button onclick="resetFilters()" class="text-xs text-lacquer-700 hover:text-lacquer-900 underline underline-offset-2">ล้างตัวกรองทั้งหมด</button>
+    </aside>
+
+    <!-- GRID -->
+    <div class="flex-1 min-w-0">
+      <p class="text-sm text-teak-300 mb-5">
+        พบ <span id="countLabel" class="font-semibold text-teak-700">12</span> รายการ
+      </p>
+      <div id="instrumentGrid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5"></div>
+      <div id="emptyState" class="hidden text-center py-20 border border-dashed border-teak-100 rounded-xl">
+        <div class="text-4xl mb-3">🎶</div>
+        <p class="font-display text-teak-700 font-semibold mb-1">ไม่พบเครื่องดนตรี</p>
+        <p class="text-sm text-teak-300 mb-4">ลองเปลี่ยนตัวกรองหรือคำค้นหาดูครับ</p>
+        <button onclick="resetFilters()" class="text-lacquer-700 border border-lacquer-700 px-4 py-2 rounded-md text-sm font-semibold hover:bg-lacquer-700 hover:text-brass-300 transition-colors">ดูทั้งหมด</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DETAIL PANEL (slide-in from right) ════════════════════════════ -->
+<div id="overlay" class="fixed inset-0 overlay z-50 hidden" onclick="closeDetail()"></div>
+<div id="detail-panel" class="fixed top-0 right-0 h-full w-full sm:w-[520px] bg-white z-50 overflow-y-auto shadow-2xl hidden-panel">
+  <div class="sticky top-0 bg-white border-b border-teak-100 px-6 py-4 flex items-center justify-between z-10">
+    <h2 id="dp-title" class="font-display font-bold text-xl text-teak-900"></h2>
+    <button onclick="closeDetail()" class="w-9 h-9 rounded-lg border border-teak-100 flex items-center justify-center text-teak-400 hover:text-lacquer-700 hover:border-lacquer-700 transition-colors text-lg">✕</button>
+  </div>
+  <div id="dp-body" class="p-6"></div>
+</div>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════════════ -->
+<footer class="bg-teak-900 text-teak-300 py-8 mt-20 text-center">
+  <p class="font-display text-brass-500 font-semibold mb-1">ดนตรีไทยเบื้องต้น</p>
+  <p class="text-sm opacity-60">© 2568 พัฒนาด้วย PHP · Laravel · Tailwind CSS</p>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+// DATA — Mock data จาก thai_music_db (instrument_id 1-12)
+// ══════════════════════════════════════════════════════════════════
+const CATEGORIES = {
+  1:'เครื่องสาย', 2:'เครื่องเป่า', 3:'เครื่องตี', 4:'เครื่องดีด', 5:'เครื่องกระทบ'
+};
+const DIFFICULTIES = { 1:'เริ่มต้น', 2:'ปานกลาง', 3:'สูง' };
+const CAT_EMOJI = { 1:'🎻', 2:'🎵', 3:'🪘', 4:'🪗', 5:'🔔' };
+
+// ══ REAL PHOTOS (Wikimedia Commons) — matched to each instrument's actual look ══
+const IMG_FILES = {
+  1:  'Princess Sirindhorn playing Ranat ek, May 1, 2018.jpg', // ระนาดเอก
+  2:  'Ranat thum.jpg',                                        // ระนาดทุ้ม
+  3:  'Kim Thai Instrument.jpg',                                // ขิม
+  4:  'Saw duang.jpg',                                          // ซอด้วง
+  5:  'Saw u.jpg',                                               // ซออู้
+  6:  'Khluimouthpiece.jpg',                                     // ขลุ่ยเพียงออ
+  7:  'Ching (musical instrument).jpg',                         // ฉิ่ง
+  8:  'Chakhe.jpg',                                              // จะเข้
+  9:  'Ranat ek lek.jpg',                                        // ระนาดแก้ว (closest metallophone-style ranat available)
+  10: 'Khrueang Mahori Piphat (1929, p. 23).jpg',                // ปี่ใน (period plate of Thai pi instruments)
+  11: 'Krap.jpg',                                                // กรับ
+  12: 'ภาพส่วนต่างๆซอสามสาย.jpg',                                    // ซอสามสาย
+};
+function imgUrl(id){
+  const f = IMG_FILES[id];
+  if(!f) return '';
+  return 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(f.replace(/ /g,'_'));
+}
+function instrumentMedia(item, sizeClass){
+  return `
+    <img src="${imgUrl(item.id)}" alt="${item.name_th} (${item.name_en})" loading="lazy"
+         class="absolute inset-0 w-full h-full object-cover"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <div class="fallback-emoji absolute inset-0 items-center justify-center ${sizeClass} bg-teak-900" style="display:none;">${CAT_EMOJI[item.cat]||'🎶'}</div>`;
+}
+
+const instruments = [
+  { id:1,  cat:3, diff:1, name_th:'ระนาดเอก',     name_en:'Ranat Ek',
+    slug:'ranat-ek', views:1542, price_min:8000, price_max:35000,
+    desc:'เครื่องดนตรีตีในวงปี่พาทย์ ทำหน้าที่เป็นผู้นำวง มีเสียงนำทำนองหลัก เหมาะสำหรับผู้เริ่มต้นที่อยากเรียนรู้จังหวะและทำนองพื้นฐานของดนตรีไทย',
+    history:'ระนาดเอกมีมาแต่สมัยอยุธยา พัฒนามาจากเครื่องตีไม้แบบโบราณ ปัจจุบันเป็นเครื่องดนตรีหลักของวงปี่พาทย์ทุกประเภท',
+    tags:['ดนตรีไทยคลาสสิก','วงปี่พาทย์','เครื่องดนตรีเริ่มต้น'],
+    shops:[{name:'ร้านดนตรีไทยศรีสุพรรณ',loc:'นนทบุรี'},{name:'ศูนย์เครื่องดนตรีไทยอยุธยา',loc:'อยุธยา'}] },
+  { id:2,  cat:3, diff:2, name_th:'ระนาดทุ้ม',    name_en:'Ranat Thum',
+    slug:'ranat-thum', views:876, price_min:7500, price_max:30000,
+    desc:'มีเสียงต่ำกว่าระนาดเอก ทำหน้าที่เดินทำนองคลอประสานเสียง เหมาะกับผู้ที่เล่นระนาดเอกได้พื้นฐานแล้ว',
+    history:'พัฒนาขึ้นในสมัยรัตนโกสินทร์เพื่อเสริมเสียงทุ้มให้กับวงปี่พาทย์ที่เดิมมีแต่ระนาดเอก',
+    tags:['วงปี่พาทย์'],
+    shops:[] },
+  { id:3,  cat:1, diff:1, name_th:'ขิม',           name_en:'Khim',
+    slug:'khim', views:2103, price_min:3500, price_max:15000,
+    desc:'เครื่องสายตีด้วยไม้ขนาดเล็ก เสียงไพเราะ นิยมในวงเครื่องสายและการเล่นเดี่ยว เหมาะมากสำหรับผู้เริ่มต้นเพราะเรียนรู้ได้เร็ว',
+    history:'ขิมมีต้นกำเนิดจากจีน เข้ามาในไทยช่วงรัชกาลที่ 5 และได้รับความนิยมอย่างแพร่หลายในเวลาต่อมา',
+    tags:['วงมโหรี','วงเครื่องสาย','เครื่องดนตรีเริ่มต้น'],
+    shops:[{name:'ร้านขิมไทยแม่กลอง',loc:'สมุทรสงคราม'}] },
+  { id:4,  cat:1, diff:2, name_th:'ซอด้วง',        name_en:'So Duang',
+    slug:'so-duang', views:1289, price_min:4500, price_max:20000,
+    desc:'เครื่องสายสีเสียงแหลม ใช้คันชักสี มีบทบาทสำคัญในวงเครื่องสายและวงมโหรี ต้องฝึกการจับคันสีให้แม่นยำ',
+    history:'ซอด้วงพัฒนามาจากซอจีนโบราณ ปรับเปลี่ยนรูปแบบให้เข้ากับดนตรีไทยตั้งแต่สมัยอยุธยา',
+    tags:['วงมโหรี','วงเครื่องสาย'],
+    shops:[{name:'ร้านเครื่องสายบ้านดนตรี',loc:'กรุงเทพฯ'}] },
+  { id:5,  cat:1, diff:2, name_th:'ซออู้',          name_en:'So U',
+    slug:'so-u', views:743, price_min:5000, price_max:22000,
+    desc:'มีเสียงทุ้มนุ่มกว่าซอด้วง ใช้กะลามะพร้าวทำกล่องเสียง เล่นคู่กับซอด้วงในวงเครื่องสาย',
+    history:"ชื่อ 'อู้' มาจากเสียงที่ออกมาคล้ายเสียงอู้อี้ทุ้มนุ่ม เป็นเครื่องดนตรีที่คู่กับซอด้วงมาแต่โบราณ",
+    tags:['วงเครื่องสาย'],
+    shops:[] },
+  { id:6,  cat:2, diff:2, name_th:'ขลุ่ยเพียงออ', name_en:'Khlui Phiang Aw',
+    slug:'khlui-phiang-aw', views:1876, price_min:800, price_max:5000,
+    desc:'ขลุ่ยไม้ไผ่เสียงกลาง เป็นเครื่องเป่าที่นิยมที่สุดในวงเครื่องสายและการเล่นเดี่ยว ฝึกการเป่าลมและปิดนิ้วให้สัมพันธ์กัน',
+    history:'ขลุ่ยเพียงออเป็นที่นิยมในหมู่ชนชั้นสูงมาแต่โบราณ ปรากฏในวรรณคดีไทยหลายเรื่อง',
+    tags:['วงเครื่องสาย'],
+    shops:[{name:'ร้านขลุ่ยลุงสมาน',loc:'อ่างทอง'}] },
+  { id:7,  cat:5, diff:1, name_th:'ฉิ่ง',          name_en:'Ching',
+    slug:'ching', views:2890, price_min:300, price_max:2500,
+    desc:'เครื่องกำกับจังหวะที่สำคัญที่สุดในวงดนตรีไทย ทำจากโลหะ ตีกระทบกันให้เสียง ฉิ่ง-ฉับ เหมาะมากสำหรับผู้เริ่มต้นฝึกจับจังหวะ',
+    history:'ฉิ่งใช้กำกับจังหวะมาตั้งแต่สมัยโบราณ เป็นเครื่องดนตรีที่ขาดไม่ได้ในทุกวงดนตรีไทย',
+    tags:['วงปี่พาทย์','เครื่องดนตรีเริ่มต้น'],
+    shops:[{name:'ตลาดเครื่องดนตรีพื้นบ้าน',loc:'หลายสาขาทั่วประเทศ'}] },
+  { id:8,  cat:4, diff:1, name_th:'จะเข้',          name_en:'Chakhe',
+    slug:'chakhe', views:654, price_min:6000, price_max:25000,
+    desc:'เครื่องสายดีดวางนอน รูปร่างคล้ายจิ้งจก มีเสียงไพเราะนิยมในวงเครื่องสาย เหมาะกับผู้ที่ชอบดีดสาย',
+    history:'จะเข้มีรูปร่างคล้ายจิ้งจกหรือตะเข้ จึงเรียกชื่อตามรูปลักษณ์ ใช้ในวงเครื่องสายมาแต่สมัยอยุธยา',
+    tags:['วงเครื่องสาย'],
+    shops:[] },
+  { id:9,  cat:3, diff:3, name_th:'ระนาดแก้ว',    name_en:'Ranat Kaeo',
+    slug:'ranat-kaeo', views:312, price_min:15000, price_max:50000,
+    desc:'ระนาดระดับสูง มีเสียงพิเศษกว่าระนาดทั่วไป ต้องมีพื้นฐานระนาดเอกมาก่อนถึงจะเรียนได้',
+    history:'เป็นเครื่องดนตรีที่พัฒนาขึ้นเพื่อใช้ในวงดนตรีพิเศษ มีจำนวนผู้เล่นไม่มากในปัจจุบัน',
+    tags:['เครื่องดนตรีระดับสูง','งานพระราชพิธี'],
+    shops:[] },
+  { id:10, cat:2, diff:3, name_th:'ปี่ใน',          name_en:'Pi Nai',
+    slug:'pi-nai', views:489, price_min:4000, price_max:18000,
+    desc:'เครื่องเป่าระดับสูงในวงปี่พาทย์ เสียงดังกังวาน ต้องใช้ลมและเทคนิคการเป่าที่ซับซ้อน',
+    history:'ปี่ในเป็นเครื่องดนตรีนำวงปี่พาทย์ที่สำคัญที่สุด ใช้ในงานพิธีสำคัญมาแต่โบราณ',
+    tags:['วงปี่พาทย์','เครื่องดนตรีระดับสูง','งานพระราชพิธี'],
+    shops:[] },
+  { id:11, cat:5, diff:1, name_th:'กรับ',           name_en:'Krap',
+    slug:'krap', views:1654, price_min:150, price_max:1200,
+    desc:'เครื่องกระทบทำจากไม้หรือไม้ไผ่ ใช้ตีกำกับจังหวะ เรียนรู้ง่ายเหมาะสำหรับเด็กและผู้เริ่มต้นทุกวัย',
+    history:'กรับเป็นเครื่องดนตรีพื้นบ้านที่ใช้กันแพร่หลายในการขับร้องและประกอบการแสดง',
+    tags:['เครื่องดนตรีเริ่มต้น'],
+    shops:[] },
+  { id:12, cat:1, diff:3, name_th:'ซอสามสาย',      name_en:'So Sam Sai',
+    slug:'so-sam-sai', views:298, price_min:25000, price_max:80000,
+    desc:'เครื่องสายชั้นสูง มี 3 สาย เสียงไพเราะนุ่มนวลที่สุดในกลุ่มซอ ใช้ในวงดนตรีราชสำนัก ต้องมีพื้นฐานซอด้วงมาก่อน',
+    history:'ซอสามสายถือเป็นเครื่องดนตรีชั้นสูงที่ใช้ในราชสำนักมาแต่โบราณ มีความประณีตทั้งรูปลักษณ์และเสียง',
+    tags:['เครื่องดนตรีระดับสูง','งานพระราชพิธี','มรดกโลก'],
+    shops:[] },
+];
+
+// ══ STATE ══════════════════════════════════════════════════════════
+let activeCat  = null;
+let activeDiff = null;
+let searchTerm = '';
+
+// ══ HERO WAVE ══════════════════════════════════════════════════════
+(function(){
+  const w = document.getElementById('heroWave');
+  const heights = [16,28,44,20,52,36,60,28,44,56,22,38,50,16,32,46,24,40,58,30,18,34,48,14,26,42,36,20,44,28];
+  heights.forEach((h,i) => {
+    const s = document.createElement('span');
+    s.className = 'waveform-bar';
+    s.style.height = h+'px';
+    s.style.opacity = (0.35 + (h/60)*0.65).toFixed(2);
+    if(i%5===0) s.style.background='#5C1414';
+    w.appendChild(s);
+  });
+})();
+
+// ══ DIFF COLOR ═════════════════════════════════════════════════════
+function diffStyle(d) {
+  if(d===1) return {bg:'bg-jade-100',   text:'text-jade-700'};
+  if(d===2) return {bg:'bg-brass-100',  text:'text-brass-700'};
+  return           {bg:'bg-lacquer-100',text:'text-lacquer-700'};
+}
+
+function priceRange(min,max) {
+  if(!min&&!max) return 'สอบถามราคา';
+  return `${min.toLocaleString()} – ${max.toLocaleString()} บาท`;
+}
+
+// ══ RENDER GRID ════════════════════════════════════════════════════
+function renderGrid() {
+  const s = searchTerm.toLowerCase();
+  const filtered = instruments.filter(i => {
+    const matchCat  = !activeCat  || i.cat  === activeCat;
+    const matchDiff = !activeDiff || i.diff === activeDiff;
+    const matchSearch = !s || i.name_th.includes(s) || i.name_en.toLowerCase().includes(s) || i.desc.includes(s);
+    return matchCat && matchDiff && matchSearch;
+  });
+
+  document.getElementById('countLabel').textContent = filtered.length;
+  const grid  = document.getElementById('instrumentGrid');
+  const empty = document.getElementById('emptyState');
+
+  if(!filtered.length){
+    grid.innerHTML=''; grid.classList.add('hidden'); empty.classList.remove('hidden'); return;
+  }
+  grid.classList.remove('hidden'); empty.classList.add('hidden');
+
+  grid.innerHTML = filtered.map(item => {
+    const ds = diffStyle(item.diff);
+    return `
+    <article onclick="openDetail(${item.id})"
+             class="bg-white border border-teak-100 rounded-xl overflow-hidden card-hover cursor-pointer">
+      <div class="bg-teak-900 h-40 flex items-center justify-center relative overflow-hidden">
+        ${instrumentMedia(item, 'text-6xl')}
+        <span class="absolute top-3 left-3 bg-teak-900/70 text-brass-300 text-xs font-medium px-2 py-1 rounded-md">
+          ${CATEGORIES[item.cat]}
+        </span>
+        <span class="absolute top-3 right-3 text-xs ${ds.bg} ${ds.text} px-2 py-0.5 rounded-full font-medium">
+          ${DIFFICULTIES[item.diff]}
+        </span>
+      </div>
+      <div class="p-4">
+        <div class="mb-2">
+          <h3 class="font-display font-bold text-base text-teak-900 leading-snug">${item.name_th}</h3>
+          <p class="text-xs text-teak-300 mt-0.5">${item.name_en}</p>
+        </div>
+        <p class="text-sm text-teak-500 leading-relaxed line-clamp-2 mb-3">${item.desc}</p>
+        <div class="flex items-center justify-between pt-3 border-t border-teak-100">
+          <div>
+            <p class="text-xs text-teak-300">ราคาโดยประมาณ</p>
+            <p class="text-sm font-semibold text-teak-700">${priceRange(item.price_min,item.price_max)}</p>
+          </div>
+          <span class="text-lacquer-700 border border-lacquer-700 text-xs font-semibold px-3 py-1.5 rounded-md hover:bg-lacquer-700 hover:text-brass-300 transition-colors">
+            ดูรายละเอียด
+          </span>
+        </div>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+// ══ DETAIL PANEL ═══════════════════════════════════════════════════
+function openDetail(id) {
+  const item = instruments.find(i => i.id === id);
+  if(!item) return;
+  item.views++;
+
+  const ds = diffStyle(item.diff);
+
+  document.getElementById('dp-title').textContent = item.name_th;
+  document.getElementById('dp-body').innerHTML = `
+    <!-- ภาพหัว -->
+    <div class="bg-teak-900 rounded-xl h-56 flex items-center justify-center mb-5 relative overflow-hidden">
+      ${instrumentMedia(item, 'text-7xl')}
+    </div>
+
+    <!-- ชื่อและ badge -->
+    <div class="flex items-start gap-3 mb-4">
+      <div class="flex-1">
+        <h2 class="font-display font-bold text-2xl text-teak-900 leading-tight">${item.name_th}</h2>
+        <p class="text-sm text-teak-300 mt-0.5">${item.name_en}</p>
+      </div>
+      <div class="flex flex-col items-end gap-1">
+        <span class="text-xs font-medium px-2.5 py-1 rounded-full ${ds.bg} ${ds.text}">${DIFFICULTIES[item.diff]}</span>
+        <span class="text-xs text-teak-300">${CATEGORIES[item.cat]}</span>
+      </div>
+    </div>
+
+    <!-- คำอธิบาย -->
+    <p class="text-[15px] text-teak-500 leading-relaxed mb-5">${item.desc}</p>
+
+    <!-- ราคา -->
+    <div class="bg-brass-100 border border-brass-300 rounded-xl p-4 mb-5">
+      <p class="text-xs font-semibold text-brass-700 uppercase tracking-wide mb-1">ราคาโดยประมาณ</p>
+      <p class="font-display font-bold text-xl text-teak-900">${priceRange(item.price_min,item.price_max)}</p>
+    </div>
+
+    <!-- ประวัติ -->
+    <div class="mb-5">
+      <h3 class="font-display font-semibold text-base text-teak-900 mb-2">ประวัติความเป็นมา</h3>
+      <p class="text-sm text-teak-500 leading-relaxed">${item.history}</p>
+    </div>
+
+    <!-- เสียงสาธิต (placeholder) -->
+    <div class="bg-teak-900 rounded-xl p-5 mb-5 flex items-center gap-4">
+      <div class="w-10 h-10 bg-brass-500 rounded-full flex items-center justify-center text-teak-900 font-bold text-lg shrink-0 cursor-pointer hover:bg-brass-300 transition-colors" onclick="playDemo(this)">▶</div>
+      <div class="min-w-0">
+        <p class="text-brass-300 text-sm font-medium">ตัวอย่างเสียง${item.name_th}</p>
+        <p class="text-teak-300 text-xs mt-0.5">กดเพื่อฟังตัวอย่าง</p>
+      </div>
+    </div>
+
+    <!-- Tags -->
+    ${item.tags.length ? `
+    <div class="flex flex-wrap gap-2 mb-5">
+      ${item.tags.map(t=>`<span class="tag-chip">${t}</span>`).join('')}
+    </div>` : ''}
+
+    <!-- แหล่งซื้อ -->
+    ${item.shops.length ? `
+    <div class="mb-5">
+      <h3 class="font-display font-semibold text-base text-teak-900 mb-2">แหล่งซื้อ</h3>
+      <div class="flex flex-col gap-2">
+        ${item.shops.map(s=>`
+          <div class="flex items-center gap-3 p-3 bg-white border border-teak-100 rounded-lg">
+            <span class="text-xl">🏪</span>
+            <div><p class="text-sm font-medium text-teak-900">${s.name}</p><p class="text-xs text-teak-300">${s.loc}</p></div>
+          </div>`).join('')}
+      </div>
+    </div>` : ''}
+
+    <!-- CTA -->
+    <div class="pt-5 border-t border-teak-100">
+      <a href="#" class="block w-full text-center bg-lacquer-700 hover:bg-lacquer-900 text-brass-300 font-semibold py-3 rounded-md transition-colors mb-2">
+        ดูบทเรียน${item.name_th}
+      </a>
+      <button onclick="closeDetail()" class="block w-full text-center border border-teak-100 hover:border-teak-300 text-teak-500 font-medium py-2.5 rounded-md transition-colors text-sm">
+        ← กลับไปดูทั้งหมด
+      </button>
+    </div>
+
+    <p class="text-center text-xs text-teak-300 mt-4">ผู้เข้าชม ${item.views.toLocaleString()} ครั้ง</p>
+  `;
+
+  document.getElementById('overlay').classList.remove('hidden');
+  const panel = document.getElementById('detail-panel');
+  panel.classList.remove('hidden-panel');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDetail() {
+  document.getElementById('overlay').classList.add('hidden');
+  document.getElementById('detail-panel').classList.add('hidden-panel');
+  document.body.style.overflow = '';
+}
+
+function playDemo(btn) {
+  btn.textContent = '■';
+  setTimeout(() => { btn.textContent = '▶'; }, 2000);
+}
+
+// ══ FILTER HANDLERS ════════════════════════════════════════════════
+function filterCat(catId) {
+  activeCat = catId;
+  document.querySelectorAll('[id^="cat-"]').forEach(el => {
+    const isActive = (catId===null && el.id==='cat-all') || (catId && el.id===`cat-${catId}`);
+    el.className = `${isActive?'pill-active':'pill-default'} px-4 py-1.5 rounded-full text-sm font-medium border transition-colors`;
+  });
+  applyFilters();
+}
+
+function filterDiff(diffId) {
+  activeDiff = diffId;
+  document.querySelectorAll('[id^="diff-"]').forEach(el => {
+    const key = el.id.replace('diff-','');
+    const isActive = (diffId===null && key==='all') || (diffId && key==diffId);
+    el.className = `text-sm py-1.5 px-3 rounded-md text-left transition-colors ${isActive ? 'bg-brass-100 text-brass-700 font-medium' : 'text-teak-500 hover:bg-teak-50'}`;
+  });
+  applyFilters();
+}
+
+function applyFilters() {
+  searchTerm = document.getElementById('searchBox')?.value || '';
+  renderGrid();
+}
+
+function resetFilters() {
+  activeCat = null; activeDiff = null; searchTerm = '';
+  if(document.getElementById('searchBox')) document.getElementById('searchBox').value = '';
+  filterCat(null); filterDiff(null);
+}
+
+function showCatalogue() { closeDetail(); }
+
+// ── Init ──────────────────────────────────────────────────────────
+renderGrid();
+</script>
+</body>
+</html>

@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — ดนตรีไทยเบื้องต้น</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Noto+Serif+Thai:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{fontFamily:{display:['"Noto Serif Thai"','serif'],body:['Sarabun','sans-serif']},colors:{lacquer:{50:'#FDF2F2',100:'#F6E4E1',500:'#8A2424',700:'#5C1414',900:'#3D0F0F'},brass:{100:'#F3E9D2',300:'#DEC58F',500:'#C5A059',700:'#8C6A1F'},teak:{50:'#FBF7EF',100:'#D9CFC2',200:'#C5B9A8',300:'#A6957F',400:'#8A7260',500:'#6B5740',700:'#4A3825',900:'#2A1E14'},jade:{100:'#E3EBE3',500:'#4A7A5A',700:'#2F4538'}}}}}
+</script>
+<style>
+*{box-sizing:border-box;}
+body{font-family:'Sarabun',sans-serif;}
+.font-display{font-family:'Noto Serif Thai',serif;}
+
+/* Sidebar */
+#sidebar{transition:transform .3s cubic-bezier(.34,1.1,.64,1);}
+#sidebar-overlay{transition:opacity .3s;}
+
+/* Progress bar fill animation */
+.prog-fill{transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+
+/* Tab underline */
+.tab-line{position:absolute;bottom:0;height:2px;background:#5C1414;border-radius:1px;
+  transition:left .3s cubic-bezier(.34,1.26,.64,1),width .3s cubic-bezier(.34,1.26,.64,1);}
+
+/* Card hover */
+.hover-lift{transition:box-shadow .15s,transform .2s cubic-bezier(.34,1.36,.64,1);}
+.hover-lift:hover{box-shadow:0 8px 24px rgba(42,30,20,.10);transform:translateY(-2px);}
+
+/* Notification badge pulse */
+@keyframes pulse-dot{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+.pulse-dot{animation:pulse-dot 1.8s ease-in-out infinite;}
+
+/* Modal */
+#modal-overlay{transition:opacity .2s;}
+#modal-box{transition:transform .3s cubic-bezier(.34,1.26,.64,1),opacity .2s;}
+
+/* Toast */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:#2A1E14;color:#DEC58F;padding:12px 24px;border-radius:999px;
+  font-size:14px;font-weight:500;z-index:999;display:flex;align-items:center;gap:8px;
+  transition:transform .35s cubic-bezier(.34,1.26,.64,1),opacity .3s;opacity:0;pointer-events:none;}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+
+/* Donut chart */
+.donut{transform:rotate(-90deg);}
+.donut-track{fill:none;stroke:#D9CFC2;stroke-width:8;}
+.donut-fill{fill:none;stroke:#5C1414;stroke-width:8;stroke-linecap:round;
+  stroke-dasharray:0 283;transition:stroke-dasharray 1.4s cubic-bezier(.4,0,.2,1);}
+
+/* Waveform */
+.wv{display:inline-block;width:3px;border-radius:2px;background:#C5A059;margin:0 1px;vertical-align:middle;}
+
+/* Calendar day */
+.cal-day{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;}
+.cal-day:hover{background:#F3E9D2;}
+.cal-day.today{background:#5C1414;color:#DEC58F;font-weight:700;}
+.cal-day.has-event{position:relative;}
+.cal-day.has-event::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:#C5A059;}
+
+/* Role switcher */
+.role-btn{padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all .15s;}
+.role-btn.active{background:#5C1414;color:#DEC58F;border-color:#5C1414;}
+.role-btn.inactive{background:#fff;color:#6B5740;border-color:#D9CFC2;}
+.role-btn.inactive:hover{border-color:#C5A059;}
+</style>
+</head>
+<body class="bg-teak-50 text-teak-900">
+
+<!-- ══ SIDEBAR OVERLAY (mobile) ══════════════════════════════════════ -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-teak-900/50 z-30 hidden opacity-0" onclick="closeSidebar()"></div>
+
+<!-- ══ SIDEBAR ═══════════════════════════════════════════════════════ -->
+<aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-teak-900 z-40 flex flex-col -translate-x-full lg:translate-x-0">
+
+  <!-- Brand -->
+  <div class="px-5 py-5 border-b border-teak-700 flex items-center justify-between">
+    <a href="page1-instruments.html" class="flex items-center gap-3">
+      <div class="w-8 h-8 bg-lacquer-700 rounded-lg flex items-center justify-center text-base">🪘</div>
+      <span class="font-display font-bold text-brass-300 text-sm">ดนตรีไทยเบื้องต้น</span>
+    </a>
+    <button onclick="closeSidebar()" class="lg:hidden text-teak-400 hover:text-white text-lg">✕</button>
+  </div>
+
+  <!-- User info -->
+  <div class="px-5 py-4 border-b border-teak-700">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-lacquer-700 rounded-xl flex items-center justify-center text-lg shrink-0" id="sb-avatar">🎵</div>
+      <div class="min-w-0">
+        <p class="text-white font-semibold text-sm truncate" id="sb-name">มานี จันทร์เพ็ญ</p>
+        <p class="text-teak-400 text-xs" id="sb-role-label">นักเรียน</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nav menu -->
+  <nav class="flex-1 px-3 py-4 overflow-y-auto">
+    <p class="text-teak-500 text-xs uppercase tracking-widest px-2 mb-2 font-medium">เมนูหลัก</p>
+    <div class="flex flex-col gap-0.5" id="sidebarMenu"></div>
+  </nav>
+
+  <!-- Logout -->
+  <div class="px-3 py-4 border-t border-teak-700">
+    <a href="page2-auth.html"
+       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-teak-400 hover:text-white hover:bg-teak-700 transition-colors text-sm font-medium">
+      <span>🚪</span> ออกจากระบบ
+    </a>
+  </div>
+</aside>
+
+<!-- ══ MAIN WRAPPER ═══════════════════════════════════════════════════ -->
+<div class="lg:ml-64 min-h-screen flex flex-col">
+
+  <!-- ── TOP NAVBAR ─────────────────────────────────────────────────── -->
+  <header class="bg-white border-b border-teak-100 sticky top-0 z-20">
+    <div class="px-4 sm:px-6 h-16 flex items-center justify-between">
+
+      <!-- Hamburger (mobile) -->
+      <button onclick="openSidebar()" class="lg:hidden w-9 h-9 flex flex-col justify-center items-center gap-1.5 rounded-lg hover:bg-teak-50 transition-colors">
+        <span class="w-5 h-0.5 bg-teak-500 rounded"></span>
+        <span class="w-5 h-0.5 bg-teak-500 rounded"></span>
+        <span class="w-5 h-0.5 bg-teak-500 rounded"></span>
+      </button>
+
+      <!-- Page title -->
+      <div class="flex-1 lg:flex-none lg:ml-0 ml-3">
+        <h1 class="font-display font-bold text-lg text-teak-900" id="pageTitle">Dashboard</h1>
+        <p class="text-xs text-teak-400 hidden sm:block" id="pageSubtitle">ภาพรวมการเรียนของคุณ</p>
+      </div>
+
+      <!-- Role switcher + notif -->
+      <div class="flex items-center gap-3">
+        <!-- Role demo switcher -->
+        <div class="hidden sm:flex items-center gap-1 bg-teak-50 p-1 rounded-full border border-teak-100">
+          <button class="role-btn active" id="rb-student" onclick="switchRole('student')">นักเรียน</button>
+          <button class="role-btn inactive" id="rb-teacher" onclick="switchRole('teacher')">ครู</button>
+        </div>
+
+        <!-- Notification bell -->
+        <button onclick="openModal('notif')" class="relative w-9 h-9 flex items-center justify-center rounded-lg hover:bg-teak-50 transition-colors">
+          <span class="text-xl">🔔</span>
+          <span class="pulse-dot absolute top-1.5 right-1.5 w-2 h-2 bg-lacquer-700 rounded-full"></span>
+        </button>
+
+        <!-- Avatar -->
+        <div class="w-9 h-9 bg-lacquer-700 rounded-xl flex items-center justify-center text-base cursor-pointer hover:bg-lacquer-900 transition-colors" id="nav-avatar">🎵</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── CONTENT ─────────────────────────────────────────────────────── -->
+  <main class="flex-1 px-4 sm:px-6 py-6" id="mainContent">
+    <!-- Injected by JS -->
+  </main>
+
+</div>
+
+<!-- ══ MODAL ═════════════════════════════════════════════════════════ -->
+<div id="modal-overlay" class="fixed inset-0 bg-teak-900/50 z-50 hidden opacity-0 flex items-end sm:items-center justify-center p-4" onclick="closeModal()">
+  <div id="modal-box" class="bg-white rounded-2xl w-full max-w-md max-h-[85vh] overflow-hidden shadow-2xl scale-95 opacity-0" onclick="event.stopPropagation()">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-teak-100">
+      <h3 class="font-display font-bold text-base text-teak-900" id="modal-title">Modal</h3>
+      <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-lg border border-teak-100 text-teak-400 hover:text-lacquer-700 hover:border-lacquer-700 transition-colors">✕</button>
+    </div>
+    <div id="modal-body" class="p-5 overflow-y-auto max-h-[65vh]"></div>
+  </div>
+</div>
+
+<!-- ══ TOAST ══════════════════════════════════════════════════════════ -->
+<div id="toast"><span id="ti">✓</span><span id="tm"></span></div>
+
+<script>
+// ══════════════════════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════════════════════
+const DATA = {
+  student: {
+    name:'มานี จันทร์เพ็ญ', avatar:'🎵', role:'นักเรียน',
+    classrooms:[
+      { id:1, name:'ระนาดเอกเบื้องต้น รุ่นที่ 5', teacher:'ครูสมชาย', instrument:'ระนาดเอก', code:'RNK105',
+        lessons:[
+          {id:1, title:'รู้จักระนาดเอกและการจับไม้ตี', status:'completed', pct:100, diff:1},
+          {id:2, title:'การไล่เสียงและตำแหน่งลูกระนาด', status:'completed', pct:100, diff:1},
+          {id:3, title:'เพลงโหมโรงเช้า (ท่อนต้น)', status:'in_progress', pct:60, diff:2},
+          {id:4, title:'เทคนิคการกรอและรัว', status:'not_started', pct:0, diff:2},
+        ]
+      },
+      { id:4, name:'ระนาดทุ้ม สำหรับผู้มีพื้นฐาน', teacher:'ครูสมชาย', instrument:'ระนาดทุ้ม', code:'RNT201',
+        lessons:[
+          {id:12, title:'ความแตกต่างระหว่างระนาดเอกและระนาดทุ้ม', status:'not_started', pct:0, diff:2},
+          {id:13, title:'การเดินทำนองคลอประสานเสียง', status:'not_started', pct:0, diff:2},
+        ]
+      },
+    ],
+    quizResults:[
+      {subject:'การไล่เสียงระนาด', score:80, pass:true, date:'13 ม.ค. 2569'},
+    ],
+    notifications:[
+      {id:1, icon:'📚', title:'การบ้านใกล้ครบกำหนดส่ง', body:'อย่าลืมส่งวิดีโอฝึกซ้อมเพลงโหมโรงเช้าภายในคืนนี้', time:'3 ชม. ที่แล้ว', read:false, type:'homework'},
+      {id:2, icon:'📅', title:'คลาสระนาดเอก สัปดาห์ที่ 5', body:'จะเริ่มในวันพฤหัสบดีที่ 3 ก.ค. เวลา 16:00 น.', time:'1 วันที่แล้ว', read:false, type:'class'},
+      {id:3, icon:'🏆', title:'ผ่านแบบทดสอบ!', body:'คุณได้ 80% ในแบบทดสอบการไล่เสียงระนาด', time:'2 วันที่แล้ว', read:true, type:'result'},
+    ],
+    events:[
+      {day:3, title:'คลาสระนาดเอก', time:'16:00'},
+      {day:5, title:'ส่งการบ้านโหมโรงเช้า', time:'ทั้งวัน'},
+      {day:15, title:'สอบกลางภาค', time:'19:00'},
+    ],
+    stats:{completed:2, inProgress:1, notStarted:3, total:6}
+  },
+  teacher: {
+    name:'สมชาย ทองดี', avatar:'🎓', role:'ครูผู้สอน',
+    classrooms:[
+      { id:1, name:'ระนาดเอกเบื้องต้น รุ่นที่ 5', code:'RNK105', students:2, instrument:'ระนาดเอก',
+        lessons:[
+          {id:1, title:'รู้จักระนาดเอกและการจับไม้ตี', published:true, submissions:2},
+          {id:2, title:'การไล่เสียงและตำแหน่งลูกระนาด', published:true, submissions:2},
+          {id:3, title:'เพลงโหมโรงเช้า (ท่อนต้น)', published:true, submissions:1},
+          {id:4, title:'เทคนิคการกรอและรัว', published:false, submissions:0},
+        ]
+      },
+      { id:4, name:'ระนาดทุ้ม สำหรับผู้มีพื้นฐาน', code:'RNT201', students:1, instrument:'ระนาดทุ้ม',
+        lessons:[
+          {id:12, title:'ความแตกต่างระหว่างระนาดเอกและระนาดทุ้ม', published:true, submissions:0},
+          {id:13, title:'การเดินทำนองคลอประสานเสียง', published:true, submissions:0},
+        ]
+      },
+    ],
+    students:[
+      {name:'มานี จันทร์เพ็ญ', classroom:'ระนาดเอก รุ่น 5', progress:67, lastSeen:'วันนี้'},
+      {name:'อนันต์ ชัยมงคล', classroom:'ระนาดเอก รุ่น 5', progress:40, lastSeen:'3 วันที่แล้ว'},
+      {name:'มานี จันทร์เพ็ญ', classroom:'ระนาดทุ้ม', progress:0, lastSeen:'ยังไม่เริ่ม'},
+    ],
+    notifications:[
+      {id:1, icon:'📝', title:'มานีส่งการบ้านโหมโรงเช้า', body:'นักเรียนส่งวิดีโอฝึกซ้อม รอการตรวจ', time:'1 ชม. ที่แล้ว', read:false, type:'homework'},
+      {id:2, icon:'👤', title:'นักเรียนใหม่เข้าร่วม', body:'อนันต์ ชัยมงคล เข้าร่วมชั้นเรียนระนาดเอก', time:'2 วันที่แล้ว', read:true, type:'join'},
+    ],
+    events:[
+      {day:3, title:'สอนระนาดเอก', time:'16:00'},
+      {day:8, title:'ประชุมครู', time:'10:00'},
+      {day:15, title:'สอบกลางภาค', time:'19:00'},
+    ],
+    stats:{totalStudents:3, totalLessons:6, published:5, avgProgress:52}
+  }
+};
+
+// ══ STATE ══════════════════════════════════════════════════════════
+let currentRole = 'student';
+let activeTab   = 'overview';
+
+// ══ SIDEBAR ════════════════════════════════════════════════════════
+const MENUS = {
+  student:[
+    {id:'overview', icon:'📊', label:'ภาพรวม'},
+    {id:'lessons',  icon:'📖', label:'บทเรียนของฉัน'},
+    {id:'calendar', icon:'📅', label:'ปฏิทินและนัดหมาย'},
+    {id:'quiz',     icon:'📝', label:'แบบทดสอบ'},
+  ],
+  teacher:[
+    {id:'overview',  icon:'📊', label:'ภาพรวม'},
+    {id:'classroom', icon:'🏫', label:'จัดการชั้นเรียน'},
+    {id:'students',  icon:'👥', label:'รายชื่อนักเรียน'},
+    {id:'calendar',  icon:'📅', label:'ปฏิทินและนัดหมาย'},
+  ]
+};
+
+function renderSidebar(){
+  const d=DATA[currentRole];
+  document.getElementById('sb-name').textContent=d.name;
+  document.getElementById('sb-role-label').textContent=d.role;
+  document.getElementById('sb-avatar').textContent=d.avatar;
+  document.getElementById('nav-avatar').textContent=d.avatar;
+
+  const menu=document.getElementById('sidebarMenu');
+  menu.innerHTML=MENUS[currentRole].map(m=>`
+    <button onclick="setTab('${m.id}')" id="menu-${m.id}"
+      class="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition-colors
+             ${activeTab===m.id ? 'bg-lacquer-700 text-brass-300' : 'text-teak-300 hover:bg-teak-700 hover:text-white'}">
+      <span class="text-base">${m.icon}</span>${m.label}
+    </button>`).join('');
+}
+
+function openSidebar(){
+  const sb=document.getElementById('sidebar'),ov=document.getElementById('sidebar-overlay');
+  sb.classList.remove('-translate-x-full'); ov.classList.remove('hidden');
+  requestAnimationFrame(()=>ov.classList.remove('opacity-0'));
+}
+function closeSidebar(){
+  const sb=document.getElementById('sidebar'),ov=document.getElementById('sidebar-overlay');
+  sb.classList.add('-translate-x-full'); ov.classList.add('opacity-0');
+  setTimeout(()=>ov.classList.add('hidden'),300);
+}
+
+// ══ ROLE SWITCH ════════════════════════════════════════════════════
+function switchRole(role){
+  currentRole=role; activeTab='overview';
+  document.getElementById('rb-student').className='role-btn '+(role==='student'?'active':'inactive');
+  document.getElementById('rb-teacher').className='role-btn '+(role==='teacher'?'active':'inactive');
+  renderSidebar(); renderContent();
+  showToast('สลับเป็น Dashboard '+DATA[role].role,'✓');
+}
+
+// ══ TAB ════════════════════════════════════════════════════════════
+function setTab(id){
+  activeTab=id; renderSidebar(); renderContent();
+  closeSidebar();
+}
+
+// ══ RENDER CONTENT ════════════════════════════════════════════════
+function renderContent(){
+  const main=document.getElementById('mainContent');
+  if(currentRole==='student'){
+    if(activeTab==='overview')  { main.innerHTML=studentOverview(); animateProgress(); }
+    if(activeTab==='lessons')   { main.innerHTML=studentLessons(); }
+    if(activeTab==='calendar')  { main.innerHTML=renderCalendar(); }
+    if(activeTab==='quiz')      { main.innerHTML=studentQuiz(); }
+  } else {
+    if(activeTab==='overview')  { main.innerHTML=teacherOverview(); }
+    if(activeTab==='classroom') { main.innerHTML=teacherClassroom(); }
+    if(activeTab==='students')  { main.innerHTML=teacherStudents(); }
+    if(activeTab==='calendar')  { main.innerHTML=renderCalendar(); }
+  }
+
+  const tmap={overview:'ภาพรวม',lessons:'บทเรียนของฉัน',calendar:'ปฏิทินและนัดหมาย',quiz:'แบบทดสอบ',classroom:'จัดการชั้นเรียน',students:'รายชื่อนักเรียน'};
+  document.getElementById('pageTitle').textContent=tmap[activeTab]||'Dashboard';
+  document.getElementById('pageSubtitle').textContent=activeTab==='overview'?'ภาพรวมการเรียนของคุณ':' ';
+}
+
+// ══ HELPERS ════════════════════════════════════════════════════════
+function diffLabel(d){ return ['','เริ่มต้น','ปานกลาง','สูง'][d]; }
+function diffBadge(d){
+  const cls=[,'bg-jade-100 text-jade-700','bg-brass-100 text-brass-700','bg-lacquer-100 text-lacquer-700'][d]||'bg-teak-100 text-teak-500';
+  return `<span class="text-xs px-2 py-0.5 rounded-full font-medium ${cls}">${diffLabel(d)}</span>`;
+}
+function statusIcon(s){ return {completed:'✅',in_progress:'🔄',not_started:'⬜'}[s]||'⬜'; }
+function statusLabel(s){ return {completed:'เสร็จแล้ว',in_progress:'กำลังเรียน',not_started:'ยังไม่เริ่ม'}[s]||''; }
+function progColor(pct){ return pct===100?'#4A7A5A':pct>0?'#5C1414':'#D9CFC2'; }
+
+function progressBar(pct, id='', h='h-2'){
+  return `<div class="w-full bg-teak-100 rounded-full ${h} overflow-hidden">
+    <div class="prog-fill ${h} rounded-full" id="${id}" style="width:0%;background:${progColor(pct)};--target:${pct}%"></div>
+  </div>`;
+}
+
+function animateProgress(){
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    document.querySelectorAll('.prog-fill').forEach(el=>{
+      const t=el.style.getPropertyValue('--target')||el.getAttribute('data-pct')+'%';
+      el.style.width=t;
+    });
+  }));
+}
+
+// ══ STUDENT: OVERVIEW ══════════════════════════════════════════════
+function studentOverview(){
+  const d=DATA.student;
+  const totalPct=Math.round((d.stats.completed/d.stats.total)*100);
+  const circumference=2*Math.PI*40; // r=40
+  const dash=(totalPct/100)*circumference;
+
+  return `
+  <!-- Stats strip -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    ${[
+      {label:'เรียนจบแล้ว', val:d.stats.completed, unit:'บท', color:'text-jade-700', bg:'bg-jade-100'},
+      {label:'กำลังเรียน',  val:d.stats.inProgress, unit:'บท', color:'text-brass-700', bg:'bg-brass-100'},
+      {label:'ยังไม่เริ่ม', val:d.stats.notStarted, unit:'บท', color:'text-teak-400', bg:'bg-teak-100'},
+      {label:'ทั้งหมด',     val:d.stats.total, unit:'บท', color:'text-lacquer-700', bg:'bg-lacquer-100'},
+    ].map(s=>`
+      <div class="bg-white border border-teak-100 rounded-xl p-4 hover-lift">
+        <div class="w-9 h-9 ${s.bg} rounded-lg flex items-center justify-center mb-3 font-bold ${s.color} text-base">${s.val}</div>
+        <p class="text-xs text-teak-400">${s.label}</p>
+        <p class="font-semibold text-sm text-teak-900 mt-0.5">${s.val} ${s.unit}</p>
+      </div>`).join('')}
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
+
+    <!-- Donut progress -->
+    <div class="bg-white border border-teak-100 rounded-xl p-5 flex flex-col items-center">
+      <p class="font-display font-bold text-sm text-teak-900 mb-4 self-start">ความก้าวหน้าโดยรวม</p>
+      <div class="relative w-36 h-36 mb-3">
+        <svg viewBox="0 0 100 100" class="w-full h-full donut">
+          <circle class="donut-track" cx="50" cy="50" r="40"/>
+          <circle class="donut-fill" cx="50" cy="50" r="40" id="donutFill"
+            stroke-dasharray="0 ${circumference.toFixed(1)}"
+            data-dash="${dash.toFixed(1)}" data-circ="${circumference.toFixed(1)}"/>
+        </svg>
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+          <span class="font-display font-bold text-2xl text-teak-900">${totalPct}%</span>
+          <span class="text-xs text-teak-400">เสร็จแล้ว</span>
+        </div>
+      </div>
+      <p class="text-xs text-teak-400 text-center">เรียนจบ ${d.stats.completed} จาก ${d.stats.total} บทเรียน</p>
+    </div>
+
+    <!-- Recent lessons -->
+    <div class="lg:col-span-2 bg-white border border-teak-100 rounded-xl p-5">
+      <div class="flex items-center justify-between mb-4">
+        <p class="font-display font-bold text-sm text-teak-900">บทเรียนล่าสุด</p>
+        <button onclick="setTab('lessons')" class="text-xs text-lacquer-700 hover:text-lacquer-900 underline underline-offset-2">ดูทั้งหมด</button>
+      </div>
+      <div class="flex flex-col gap-3">
+        ${d.classrooms[0].lessons.map(l=>`
+          <div class="flex items-center gap-3 group">
+            <span class="text-lg shrink-0">${statusIcon(l.status)}</span>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <p class="text-sm font-medium text-teak-900 truncate">${l.title}</p>
+                ${diffBadge(l.diff)}
+              </div>
+              ${progressBar(l.pct,'p'+l.id)}
+            </div>
+            <span class="text-xs text-teak-400 shrink-0 w-8 text-right">${l.pct}%</span>
+          </div>`).join('')}
+      </div>
+    </div>
+  </div>
+
+  <!-- Upcoming events -->
+  <div class="bg-white border border-teak-100 rounded-xl p-5">
+    <div class="flex items-center justify-between mb-4">
+      <p class="font-display font-bold text-sm text-teak-900">กิจกรรมที่กำลังจะมาถึง</p>
+      <button onclick="setTab('calendar')" class="text-xs text-lacquer-700 underline underline-offset-2">ปฏิทินเต็ม</button>
+    </div>
+    <div class="flex flex-col gap-2">
+      ${d.events.map(e=>`
+        <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-teak-50 transition-colors">
+          <div class="w-10 h-10 bg-lacquer-100 rounded-xl flex flex-col items-center justify-center shrink-0">
+            <span class="font-bold text-lacquer-700 text-sm leading-none">${e.day}</span>
+            <span class="text-lacquer-500 text-xs">ก.ค.</span>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-teak-900">${e.title}</p>
+            <p class="text-xs text-teak-400">${e.time}</p>
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ══ STUDENT: LESSONS ══════════════════════════════════════════════
+function studentLessons(){
+  const d=DATA.student;
+  return d.classrooms.map(cls=>`
+    <div class="bg-white border border-teak-100 rounded-xl overflow-hidden mb-5 hover-lift">
+      <!-- Classroom header -->
+      <div class="bg-teak-900 px-5 py-4 flex items-center justify-between">
+        <div>
+          <p class="text-brass-300 font-display font-bold text-base">${cls.name}</p>
+          <p class="text-teak-400 text-xs mt-0.5">ครู: ${cls.teacher} · รหัส: ${cls.code}</p>
+        </div>
+        <div class="text-2xl">🪘</div>
+      </div>
+      <!-- Lesson list -->
+      <div class="divide-y divide-teak-100">
+        ${cls.lessons.map(l=>{
+          const canStart=l.status!=='not_started'||cls.lessons.filter(x=>x.id<l.id).every(x=>x.status==='completed');
+          return `
+          <div class="px-5 py-4 flex items-center gap-4 ${!canStart?'opacity-50':''}">
+            <div class="w-10 h-10 rounded-xl shrink-0 flex items-center justify-center text-xl
+              ${l.status==='completed'?'bg-jade-100':l.status==='in_progress'?'bg-brass-100':'bg-teak-100'}">
+              ${statusIcon(l.status)}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                <p class="text-sm font-semibold text-teak-900">${l.title}</p>
+                ${diffBadge(l.diff)}
+                <span class="text-xs text-teak-400">${statusLabel(l.status)}</span>
+              </div>
+              ${l.status!=='not_started'?progressBar(l.pct,'lp'+l.id,'h-1.5'):''}
+            </div>
+            <div class="shrink-0 text-right">
+              ${l.status==='not_started'?'':` <span class="text-sm font-semibold ${l.pct===100?'text-jade-700':'text-lacquer-700'}">${l.pct}%</span>`}
+              ${canStart?`<button onclick="showToast('กำลังเปิดบทเรียน...','📖')"
+                class="block mt-1 text-xs border border-lacquer-700 text-lacquer-700 hover:bg-lacquer-700 hover:text-brass-300 px-3 py-1 rounded-md transition-colors">
+                ${l.status==='completed'?'ดูอีกครั้ง':l.status==='in_progress'?'เรียนต่อ':'เริ่มเรียน'}
+              </button>`:''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`).join('');
+}
+
+// ══ STUDENT: QUIZ ════════════════════════════════════════════════
+function studentQuiz(){
+  const res=DATA.student.quizResults;
+  return `
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+    <div class="bg-white border border-teak-100 rounded-xl p-5">
+      <p class="text-xs text-teak-400 mb-1">คะแนนเฉลี่ย</p>
+      <p class="font-display font-bold text-3xl text-teak-900">${res[0].score}<span class="text-lg text-teak-400">%</span></p>
+      <div class="mt-2">${progressBar(res[0].score,'','h-1.5')}</div>
+    </div>
+    <div class="bg-white border border-teak-100 rounded-xl p-5">
+      <p class="text-xs text-teak-400 mb-1">ผลการสอบล่าสุด</p>
+      <p class="font-display font-bold text-3xl ${res[0].pass?'text-jade-700':'text-lacquer-700'}">${res[0].pass?'ผ่าน':'ไม่ผ่าน'}</p>
+      <p class="text-xs text-teak-400 mt-1">${res[0].subject}</p>
+    </div>
+  </div>
+  <div class="bg-white border border-teak-100 rounded-xl p-5 mb-5">
+    <p class="font-display font-bold text-sm text-teak-900 mb-4">ประวัติการสอบ</p>
+    <div class="divide-y divide-teak-100">
+      ${res.map(r=>`
+        <div class="py-3 flex items-center gap-4">
+          <div class="w-10 h-10 rounded-xl shrink-0 flex items-center justify-center text-xl ${r.pass?'bg-jade-100':'bg-lacquer-100'}">
+            ${r.pass?'🏆':'📋'}
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-teak-900">${r.subject}</p>
+            <p class="text-xs text-teak-400">${r.date}</p>
+          </div>
+          <div class="text-right shrink-0">
+            <p class="font-bold text-base ${r.pass?'text-jade-700':'text-lacquer-700'}">${r.score}%</p>
+            <p class="text-xs ${r.pass?'text-jade-700':'text-lacquer-700'}">${r.pass?'ผ่าน':'ไม่ผ่าน'}</p>
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>
+  <div class="bg-brass-100 border border-brass-300 rounded-xl p-5 text-center">
+    <p class="text-2xl mb-2">📝</p>
+    <p class="font-semibold text-teak-900 mb-1">แบบทดสอบที่รอทำ</p>
+    <p class="text-sm text-teak-500 mb-4">แบบทดสอบบทที่ 3 เพลงโหมโรงเช้า ยังไม่ครบกำหนด</p>
+    <button onclick="showToast('แบบทดสอบยังไม่เปิด รอครูอนุมัติ','ℹ')" class="bg-lacquer-700 text-brass-300 text-sm font-semibold px-5 py-2 rounded-md hover:bg-lacquer-900 transition-colors">เริ่มทำแบบทดสอบ</button>
+  </div>`;
+}
+
+// ══ TEACHER: OVERVIEW ════════════════════════════════════════════
+function teacherOverview(){
+  const d=DATA.teacher;
+  return `
+  <!-- Stats strip -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    ${[
+      {label:'นักเรียนทั้งหมด', val:d.stats.totalStudents, icon:'👥', color:'text-lacquer-700', bg:'bg-lacquer-100'},
+      {label:'บทเรียนทั้งหมด',  val:d.stats.totalLessons, icon:'📖', color:'text-brass-700', bg:'bg-brass-100'},
+      {label:'เผยแพร่แล้ว',     val:d.stats.published, icon:'✅', color:'text-jade-700', bg:'bg-jade-100'},
+      {label:'ความก้าวหน้าเฉลี่ย',val:d.stats.avgProgress+'%', icon:'📊', color:'text-teak-700', bg:'bg-teak-100'},
+    ].map(s=>`
+      <div class="bg-white border border-teak-100 rounded-xl p-4 hover-lift">
+        <div class="w-9 h-9 ${s.bg} rounded-lg flex items-center justify-center mb-3 text-base">${s.icon}</div>
+        <p class="text-xs text-teak-400">${s.label}</p>
+        <p class="font-bold text-xl ${s.color} mt-0.5">${s.val}</p>
+      </div>`).join('')}
+  </div>
+
+  <!-- Classrooms overview -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+    ${d.classrooms.map(cls=>`
+      <div class="bg-white border border-teak-100 rounded-xl overflow-hidden hover-lift cursor-pointer" onclick="setTab('classroom')">
+        <div class="bg-teak-900 px-4 py-3 flex items-center justify-between">
+          <div>
+            <p class="text-brass-300 font-semibold text-sm">${cls.name}</p>
+            <p class="text-teak-400 text-xs mt-0.5">รหัส: ${cls.code}</p>
+          </div>
+          <span class="bg-brass-500/20 text-brass-300 text-xs px-2 py-0.5 rounded-full">${cls.students} คน</span>
+        </div>
+        <div class="p-4">
+          <div class="flex items-center justify-between text-xs text-teak-400 mb-2">
+            <span>${cls.lessons.filter(l=>l.published).length}/${cls.lessons.length} บทเรียน</span>
+            <span class="text-lacquer-700 font-medium">จัดการ →</span>
+          </div>
+          <div class="flex gap-1">
+            ${cls.lessons.map(l=>`
+              <div class="flex-1 h-1.5 rounded-full ${l.published?'bg-jade-500':'bg-teak-100'}"></div>`).join('')}
+          </div>
+          <p class="text-xs text-teak-400 mt-1">${cls.lessons.filter(l=>l.published).length} เผยแพร่แล้ว · ${cls.lessons.filter(l=>!l.published).length} ฉบับร่าง</p>
+        </div>
+      </div>`).join('')}
+  </div>
+
+  <!-- Student progress table -->
+  <div class="bg-white border border-teak-100 rounded-xl p-5">
+    <div class="flex items-center justify-between mb-4">
+      <p class="font-display font-bold text-sm text-teak-900">ความก้าวหน้านักเรียน</p>
+      <button onclick="setTab('students')" class="text-xs text-lacquer-700 underline underline-offset-2">ดูทั้งหมด</button>
+    </div>
+    <div class="divide-y divide-teak-100">
+      ${d.students.map(s=>`
+        <div class="py-3 flex items-center gap-4">
+          <div class="w-9 h-9 bg-teak-100 rounded-xl flex items-center justify-center text-base shrink-0">👤</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-1">
+              <p class="text-sm font-semibold text-teak-900 truncate">${s.name}</p>
+              <span class="text-xs font-bold ${s.progress===100?'text-jade-700':s.progress>0?'text-lacquer-700':'text-teak-400'} shrink-0 ml-2">${s.progress}%</span>
+            </div>
+            ${progressBar(s.progress,'tp'+s.progress+Math.random(),'h-1.5')}
+            <p class="text-xs text-teak-400 mt-1">${s.classroom} · ${s.lastSeen}</p>
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ══ TEACHER: CLASSROOM MANAGEMENT ════════════════════════════════
+function teacherClassroom(){
+  const d=DATA.teacher;
+  return `
+  <div class="flex items-center justify-between mb-5">
+    <p class="text-sm text-teak-400">ชั้นเรียนทั้งหมด ${d.classrooms.length} ห้อง</p>
+    <button onclick="showToast('เปิดฟอร์มสร้างชั้นเรียน','➕')"
+      class="flex items-center gap-2 bg-lacquer-700 hover:bg-lacquer-900 text-brass-300 px-4 py-2 rounded-md text-sm font-semibold transition-colors">
+      ➕ สร้างชั้นเรียน
+    </button>
+  </div>
+
+  ${d.classrooms.map(cls=>`
+    <div class="bg-white border border-teak-100 rounded-xl overflow-hidden mb-5">
+      <div class="bg-teak-900 px-5 py-4 flex items-center justify-between">
+        <div>
+          <p class="text-brass-300 font-display font-bold text-base">${cls.name}</p>
+          <p class="text-teak-400 text-xs mt-0.5">รหัสเข้าร่วม: <span class="font-mono text-brass-500">${cls.code}</span> · ${cls.students} นักเรียน</p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="showToast('คัดลอกรหัส ${cls.code} แล้ว','📋')" class="text-xs bg-brass-500/20 hover:bg-brass-500/30 text-brass-300 px-3 py-1.5 rounded-md transition-colors">📋 แชร์รหัส</button>
+        </div>
+      </div>
+
+      <!-- Lesson list with publish toggle -->
+      <div class="divide-y divide-teak-100">
+        ${cls.lessons.map((l,i)=>`
+          <div class="px-5 py-3.5 flex items-center gap-4">
+            <div class="w-8 h-8 rounded-lg shrink-0 flex items-center justify-center text-xs font-bold
+              bg-teak-100 text-teak-500">${i+1}</div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-teak-900 truncate">${l.title}</p>
+              <p class="text-xs text-teak-400 mt-0.5">${l.submissions} คนส่งงาน</p>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <!-- Publish toggle -->
+              <button onclick="togglePublish(this,${cls.id},${l.id})"
+                class="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition-colors
+                       ${l.published?'bg-jade-100 text-jade-700 border-jade-500':'bg-teak-100 text-teak-400 border-teak-200'}">
+                ${l.published?'✅ เผยแพร่':'📝 ฉบับร่าง'}
+              </button>
+              <button onclick="showToast('เปิดแก้ไขบทเรียน','✏️')" class="text-xs border border-teak-100 text-teak-400 hover:text-lacquer-700 hover:border-lacquer-700 px-2.5 py-1.5 rounded-md transition-colors">✏️</button>
+            </div>
+          </div>`).join('')}
+      </div>
+
+      <!-- Add lesson -->
+      <div class="px-5 py-3 border-t border-teak-100">
+        <button onclick="showToast('เปิดฟอร์มเพิ่มบทเรียน','📖')"
+          class="flex items-center gap-2 text-sm text-lacquer-700 hover:text-lacquer-900 font-medium transition-colors">
+          ➕ เพิ่มบทเรียน
+        </button>
+      </div>
+    </div>`).join('')}`;
+}
+
+function togglePublish(btn, classId, lessonId){
+  const cls=DATA.teacher.classrooms.find(c=>c.id===classId);
+  const lesson=cls?.lessons.find(l=>l.id===lessonId);
+  if(lesson){ lesson.published=!lesson.published; renderContent(); showToast(lesson.published?'เผยแพร่บทเรียนแล้ว':'ย้ายไปฉบับร่างแล้ว', lesson.published?'✅':'📝'); }
+}
+
+// ══ TEACHER: STUDENTS ════════════════════════════════════════════
+function teacherStudents(){
+  const d=DATA.teacher;
+  return `
+  <div class="bg-white border border-teak-100 rounded-xl overflow-hidden">
+    <div class="px-5 py-4 border-b border-teak-100 flex items-center justify-between">
+      <p class="font-display font-bold text-sm text-teak-900">นักเรียนทั้งหมด (${d.students.length} คน)</p>
+      <input type="text" placeholder="ค้นหาชื่อนักเรียน..." oninput="showToast('ค้นหา: '+this.value,'🔍')"
+             class="border border-teak-100 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-brass-500 w-44">
+    </div>
+    <div class="divide-y divide-teak-100">
+      ${d.students.map((s,i)=>`
+        <div class="px-5 py-4 flex items-center gap-4 hover:bg-teak-50 transition-colors">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-base shrink-0 font-bold
+            bg-lacquer-100 text-lacquer-700">${s.name[0]}</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-1">
+              <p class="text-sm font-semibold text-teak-900">${s.name}</p>
+              <span class="font-bold text-sm ${s.progress===100?'text-jade-700':s.progress>0?'text-lacquer-700':'text-teak-400'} shrink-0">${s.progress}%</span>
+            </div>
+            ${progressBar(s.progress,'sp'+i,'h-1.5')}
+            <div class="flex items-center justify-between mt-1">
+              <p class="text-xs text-teak-400">${s.classroom}</p>
+              <p class="text-xs text-teak-400">เข้าเรียนล่าสุด: ${s.lastSeen}</p>
+            </div>
+          </div>
+          <button onclick="showToast('ดูรายละเอียด '+s.name,'👤')" class="shrink-0 text-xs border border-teak-100 text-teak-400 hover:text-lacquer-700 hover:border-lacquer-700 px-2.5 py-1.5 rounded-md transition-colors">ดูรายละเอียด</button>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ══ CALENDAR ════════════════════════════════════════════════════
+function renderCalendar(){
+  const d=DATA[currentRole];
+  const days=['อา','จ','อ','พ','พฤ','ศ','ส'];
+  // July 2026 starts on Wednesday (index 3)
+  const startDay=3, totalDays=31;
+  let cells=[];
+  for(let i=0;i<startDay;i++) cells.push(`<div></div>`);
+  for(let day=1;day<=totalDays;day++){
+    const ev=d.events.find(e=>e.day===day);
+    const isToday=day===12;
+    cells.push(`
+      <div class="cal-day ${isToday?'today':''} ${ev?'has-event':''}" onclick="${ev?`showToast('${ev.title} · ${ev.time}','📅')`:''}">
+        ${day}
+      </div>`);
+  }
+
+  return `
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+    <!-- Calendar -->
+    <div class="lg:col-span-2 bg-white border border-teak-100 rounded-xl p-5">
+      <div class="flex items-center justify-between mb-4">
+        <p class="font-display font-bold text-sm text-teak-900">กรกฎาคม 2569</p>
+        <div class="flex gap-1">
+          <button class="w-7 h-7 rounded-lg border border-teak-100 text-teak-400 hover:border-lacquer-700 hover:text-lacquer-700 transition-colors text-sm">‹</button>
+          <button class="w-7 h-7 rounded-lg border border-teak-100 text-teak-400 hover:border-lacquer-700 hover:text-lacquer-700 transition-colors text-sm">›</button>
+        </div>
+      </div>
+      <div class="grid grid-cols-7 gap-1 mb-2">
+        ${days.map(d=>`<div class="text-center text-xs text-teak-400 font-medium py-1">${d}</div>`).join('')}
+      </div>
+      <div class="grid grid-cols-7 gap-1">${cells.join('')}</div>
+      <div class="flex items-center gap-4 mt-4 pt-4 border-t border-teak-100 text-xs text-teak-400">
+        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-lacquer-700 inline-block"></span> วันนี้</span>
+        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-brass-500 inline-block"></span> มีกิจกรรม</span>
+      </div>
+    </div>
+
+    <!-- Event list -->
+    <div class="bg-white border border-teak-100 rounded-xl p-5">
+      <p class="font-display font-bold text-sm text-teak-900 mb-4">กิจกรรมเดือนนี้</p>
+      <div class="flex flex-col gap-3">
+        ${d.events.map(e=>`
+          <div class="flex gap-3 p-3 rounded-lg hover:bg-teak-50 transition-colors cursor-pointer" onclick="showToast('${e.title}','📅')">
+            <div class="w-10 shrink-0 text-center">
+              <p class="font-bold text-lacquer-700 text-lg leading-none">${e.day}</p>
+              <p class="text-xs text-teak-400">ก.ค.</p>
+            </div>
+            <div class="flex-1 border-l border-teak-100 pl-3">
+              <p class="text-sm font-semibold text-teak-900">${e.title}</p>
+              <p class="text-xs text-teak-400 mt-0.5">⏰ ${e.time}</p>
+            </div>
+          </div>`).join('')}
+      </div>
+      <button onclick="showToast('เปิดฟอร์มเพิ่มกิจกรรม','➕')"
+        class="w-full mt-4 border border-dashed border-teak-200 hover:border-lacquer-700 text-teak-400 hover:text-lacquer-700 rounded-lg py-2.5 text-sm font-medium transition-colors">
+        ➕ เพิ่มกิจกรรม
+      </button>
+    </div>
+  </div>`;
+}
+
+// ══ MODAL ═════════════════════════════════════════════════════════
+function openModal(type){
+  const overlay=document.getElementById('modal-overlay');
+  const box=document.getElementById('modal-box');
+  overlay.classList.remove('hidden');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    overlay.classList.remove('opacity-0');
+    box.classList.remove('scale-95','opacity-0');
+  }));
+
+  if(type==='notif'){
+    document.getElementById('modal-title').textContent='การแจ้งเตือน';
+    const notifs=DATA[currentRole].notifications;
+    const unread=notifs.filter(n=>!n.read).length;
+    document.getElementById('modal-body').innerHTML=`
+      <div class="flex items-center justify-between mb-4">
+        <p class="text-sm text-teak-400">ยังไม่อ่าน <span class="font-bold text-lacquer-700">${unread}</span> รายการ</p>
+        <button onclick="markAllRead()" class="text-xs text-lacquer-700 underline underline-offset-2">ทำเครื่องหมายอ่านทั้งหมด</button>
+      </div>
+      <div class="flex flex-col gap-2" id="notifList">
+        ${notifs.map(n=>`
+          <div id="notif-${n.id}" class="flex gap-3 p-3 rounded-xl cursor-pointer transition-colors ${n.read?'bg-white border border-teak-100':'bg-lacquer-50 border border-lacquer-100'}"
+               onclick="readNotif(${n.id})">
+            <div class="w-9 h-9 rounded-xl shrink-0 flex items-center justify-center text-lg
+              ${n.read?'bg-teak-100':'bg-lacquer-100'}">${n.icon}</div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-teak-900 truncate">${n.title}</p>
+              <p class="text-xs text-teak-500 mt-0.5 line-clamp-2">${n.body}</p>
+              <p class="text-xs text-teak-300 mt-1">${n.time}</p>
+            </div>
+            ${!n.read?'<span class="w-2 h-2 bg-lacquer-700 rounded-full shrink-0 mt-1.5"></span>':''}
+          </div>`).join('')}
+      </div>`;
+  }
+}
+
+function closeModal(){
+  const overlay=document.getElementById('modal-overlay');
+  const box=document.getElementById('modal-box');
+  overlay.classList.add('opacity-0');
+  box.classList.add('scale-95','opacity-0');
+  setTimeout(()=>overlay.classList.add('hidden'),250);
+}
+
+function readNotif(id){
+  const n=DATA[currentRole].notifications.find(x=>x.id===id);
+  if(n&&!n.read){ n.read=true; openModal('notif'); }
+}
+function markAllRead(){
+  DATA[currentRole].notifications.forEach(n=>n.read=true);
+  openModal('notif'); showToast('อ่านทั้งหมดแล้ว','✓');
+}
+
+// ══ TOAST ═════════════════════════════════════════════════════════
+function showToast(msg,icon='✓'){
+  const t=document.getElementById('toast');
+  document.getElementById('ti').textContent=icon;
+  document.getElementById('tm').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ══ INIT ══════════════════════════════════════════════════════════
+renderSidebar();
+renderContent();
+
+// Animate donut on render
+function animateDonut(){
+  const el=document.getElementById('donutFill');
+  if(!el)return;
+  const dash=el.getAttribute('data-dash');
+  const circ=el.getAttribute('data-circ');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    el.setAttribute('stroke-dasharray',`${dash} ${circ}`);
+  }));
+}
+
+const origRender=renderContent;
+window.renderContent=function(){
+  origRender();
+  setTimeout(()=>{ animateProgress(); animateDonut(); },50);
+};
+renderContent();
+</script>
+</body>
+</html>

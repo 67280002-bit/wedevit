@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สมัครสมาชิก / เข้าสู่ระบบ — ดนตรีไทยเบื้องต้น</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Noto+Serif+Thai:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['"Noto Serif Thai"','serif'],
+        body: ['Sarabun','sans-serif'],
+      },
+      colors: {
+        lacquer: { 50:'#FDF2F2', 100:'#F6E4E1', 500:'#8A2424', 700:'#5C1414', 900:'#3D0F0F' },
+        brass:   { 100:'#F3E9D2', 300:'#DEC58F', 500:'#C5A059', 700:'#8C6A1F' },
+        teak:    { 50:'#FBF7EF', 100:'#D9CFC2', 200:'#C5B9A8', 300:'#A6957F', 400:'#8A7260', 500:'#6B5740', 700:'#4A3825', 900:'#2A1E14' },
+        jade:    { 100:'#E3EBE3', 500:'#4A7A5A', 700:'#2F4538' },
+      }
+    }
+  }
+}
+</script>
+<style>
+*{box-sizing:border-box;}
+body{font-family:'Sarabun',sans-serif;}
+.font-display{font-family:'Noto Serif Thai',serif;}
+.tab-indicator{position:absolute;bottom:-1px;height:2px;background:#5C1414;border-radius:1px;transition:left .3s cubic-bezier(.34,1.26,.64,1),width .3s cubic-bezier(.34,1.26,.64,1);}
+.field-label{display:block;font-size:13px;font-weight:600;color:#4A3825;margin-bottom:5px;}
+.field-input{width:100%;padding:10px 14px;font-family:'Sarabun',sans-serif;font-size:14px;color:#2A1E14;background:#fff;border:1.5px solid #D9CFC2;border-radius:8px;transition:border-color .15s,box-shadow .15s;outline:none;}
+.field-input:focus{border-color:#5C1414;box-shadow:0 0 0 3px rgba(92,20,20,.10);}
+.field-input.error{border-color:#8A2424;box-shadow:0 0 0 3px rgba(138,36,36,.10);}
+.field-error{font-size:12px;color:#8A2424;margin-top:4px;display:none;align-items:center;gap:4px;}
+.field-error.show{display:flex;}
+.role-card{flex:1;padding:14px 12px;border:1.5px solid #D9CFC2;border-radius:10px;cursor:pointer;text-align:center;transition:border-color .15s,background .15s,transform .15s;background:#fff;}
+.role-card:hover{border-color:#C5A059;}
+.role-card.selected{border-color:#5C1414;background:#F6E4E1;transform:translateY(-1px);}
+.role-card.selected .role-icon{background:#5C1414;color:#DEC58F;}
+.role-icon{width:44px;height:44px;border-radius:10px;background:#D9CFC2;color:#4A3825;display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 8px;transition:background .15s,color .15s;}
+.strength-bar{height:4px;border-radius:2px;flex:1;background:#D9CFC2;overflow:hidden;}
+.strength-fill{height:100%;border-radius:2px;width:0%;transition:width .3s,background .3s;}
+.btn-submit{width:100%;padding:13px;border-radius:8px;border:none;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background .15s,transform .1s;}
+.btn-submit:active{transform:scale(.98);}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#2A1E14;color:#DEC58F;padding:12px 24px;border-radius:999px;font-size:14px;font-weight:500;transition:transform .35s cubic-bezier(.34,1.26,.64,1),opacity .3s;opacity:0;pointer-events:none;white-space:nowrap;z-index:100;display:flex;align-items:center;gap:8px;}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.deco-wave{display:flex;align-items:center;gap:2px;}
+.deco-wave span{display:inline-block;width:3px;border-radius:2px;background:#C5A059;opacity:.4;}
+#successScreen{display:none;position:fixed;inset:0;background:#FBF7EF;z-index:200;flex-direction:column;align-items:center;justify-content:center;}
+.pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:#A6957F;font-size:14px;padding:4px;user-select:none;}
+.pw-toggle:hover{color:#5C1414;}
+</style>
+</head>
+<body class="bg-teak-50 min-h-screen">
+
+<header class="bg-white border-b-2 border-brass-500 sticky top-0 z-30">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <a href="page1-instruments.html" class="flex items-center gap-3">
+      <div class="w-9 h-9 bg-lacquer-700 rounded-lg flex items-center justify-center text-lg">🪘</div>
+      <span class="font-display font-bold text-lg text-lacquer-700 hidden sm:block">ดนตรีไทยเบื้องต้น</span>
+    </a>
+    <div class="flex items-center gap-3 text-sm font-medium">
+      <span class="text-teak-400">มีบัญชีแล้ว?</span>
+      <button onclick="switchTab('login')" class="text-lacquer-700 font-semibold underline underline-offset-2">เข้าสู่ระบบ</button>
+    </div>
+  </div>
+</header>
+
+<main class="min-h-[calc(100vh-64px)] flex">
+
+  <!-- LEFT decorative panel -->
+  <div class="hidden lg:flex lg:w-5/12 xl:w-1/2 bg-teak-900 flex-col justify-between p-12 relative overflow-hidden">
+    <div class="absolute -top-20 -left-20 w-72 h-72 rounded-full bg-lacquer-700 opacity-20"></div>
+    <div class="absolute -bottom-16 -right-16 w-80 h-80 rounded-full bg-brass-500 opacity-10"></div>
+    <div class="relative z-10">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="w-10 h-10 bg-lacquer-700 rounded-xl flex items-center justify-center text-xl">🪘</div>
+        <span class="font-display font-bold text-xl text-brass-300">ดนตรีไทยเบื้องต้น</span>
+      </div>
+      <div class="deco-wave mb-10" id="decoWave"></div>
+      <h2 class="font-display font-bold text-3xl text-white leading-snug mb-4">
+        ร่วมอนุรักษ์<br><span class="text-brass-500">มรดกดนตรีไทย</span><br>ในยุคดิจิทัล
+      </h2>
+      <p class="text-teak-300 text-base leading-relaxed max-w-xs">เข้าถึงบทเรียน ติดตามความก้าวหน้า และเชื่อมต่อกับครูผู้สอนได้ทุกที่ทุกเวลา</p>
+    </div>
+    <div class="relative z-10 flex flex-col gap-4">
+      <div class="flex items-start gap-3">
+        <div class="w-8 h-8 bg-brass-500/20 rounded-lg flex items-center justify-center shrink-0 text-sm">📖</div>
+        <div><p class="text-white font-semibold text-sm">บทเรียนออนไลน์</p><p class="text-teak-400 text-xs mt-0.5">วิดีโอ โน้ตเพลง และสื่อการสอนครบครัน</p></div>
+      </div>
+      <div class="flex items-start gap-3">
+        <div class="w-8 h-8 bg-brass-500/20 rounded-lg flex items-center justify-center shrink-0 text-sm">📊</div>
+        <div><p class="text-white font-semibold text-sm">ติดตามความก้าวหน้า</p><p class="text-teak-400 text-xs mt-0.5">เห็นพัฒนาการทุกบทเรียนชัดเจน</p></div>
+      </div>
+      <div class="flex items-start gap-3">
+        <div class="w-8 h-8 bg-brass-500/20 rounded-lg flex items-center justify-center shrink-0 text-sm">🎓</div>
+        <div><p class="text-white font-semibold text-sm">ระบบสำหรับครูผู้สอน</p><p class="text-teak-400 text-xs mt-0.5">จัดการชั้นเรียน นักเรียน และสื่อการสอน</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT form panel -->
+  <div class="flex-1 flex items-center justify-center px-4 py-12">
+    <div class="w-full max-w-md">
+
+      <!-- Tabs -->
+      <div class="relative flex border-b border-teak-100 mb-8">
+        <button id="tab-register" onclick="switchTab('register')" class="flex-1 pb-3 text-base font-semibold text-lacquer-700 transition-colors">สมัครสมาชิก</button>
+        <button id="tab-login"    onclick="switchTab('login')"    class="flex-1 pb-3 text-base font-semibold text-teak-400 transition-colors">เข้าสู่ระบบ</button>
+        <div class="tab-indicator" id="tabIndicator" style="left:0;width:50%"></div>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="formRegister">
+        <div class="mb-6">
+          <h1 class="font-display font-bold text-2xl text-teak-900 mb-1">สร้างบัญชีใหม่</h1>
+          <p class="text-sm text-teak-400">เริ่มต้นเส้นทางดนตรีไทยของคุณวันนี้</p>
+        </div>
+
+        <!-- Role -->
+        <div class="mb-5">
+          <p class="field-label mb-3">คุณเป็น...</p>
+          <div class="flex gap-3">
+            <div class="role-card selected" id="role-general" onclick="selectRole('general')">
+              <div class="role-icon">👤</div>
+              <p class="text-sm font-semibold text-teak-900">ผู้สนใจทั่วไป</p>
+              <p class="text-xs text-teak-400 mt-1">ค้นหาและเรียนรู้</p>
+            </div>
+            <div class="role-card" id="role-student" onclick="selectRole('student')">
+              <div class="role-icon">🎵</div>
+              <p class="text-sm font-semibold text-teak-900">นักเรียน</p>
+              <p class="text-xs text-teak-400 mt-1">เข้าร่วมชั้นเรียน</p>
+            </div>
+            <div class="role-card" id="role-teacher" onclick="selectRole('teacher')">
+              <div class="role-icon">🎓</div>
+              <p class="text-sm font-semibold text-teak-900">ครูผู้สอน</p>
+              <p class="text-xs text-teak-400 mt-1">สร้างและสอน</p>
+            </div>
+          </div>
+          <input type="hidden" id="reg-role" value="general">
+        </div>
+
+        <!-- Name -->
+        <div class="flex gap-3 mb-4">
+          <div class="flex-1">
+            <label class="field-label">ชื่อ</label>
+            <input type="text" id="reg-firstname" class="field-input" placeholder="สมชาย" oninput="clearErr('err-firstname')">
+            <div class="field-error" id="err-firstname">⚠ กรอกชื่อด้วยครับ</div>
+          </div>
+          <div class="flex-1">
+            <label class="field-label">นามสกุล</label>
+            <input type="text" id="reg-lastname" class="field-input" placeholder="ทองดี" oninput="clearErr('err-lastname')">
+            <div class="field-error" id="err-lastname">⚠ กรอกนามสกุลด้วยครับ</div>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-4">
+          <label class="field-label">อีเมล</label>
+          <input type="email" id="reg-email" class="field-input" placeholder="name@example.com" oninput="validateEmail('reg-email','err-email')">
+          <div class="field-error" id="err-email">⚠ รูปแบบอีเมลไม่ถูกต้อง</div>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-4">
+          <label class="field-label">รหัสผ่าน</label>
+          <div class="relative">
+            <input type="password" id="reg-password" class="field-input pr-10" placeholder="อย่างน้อย 8 ตัวอักษร" oninput="checkStrength()">
+            <span class="pw-toggle" onclick="togglePw('reg-password',this)">👁</span>
+          </div>
+          <div class="flex gap-1 mt-2">
+            <div class="strength-bar"><div class="strength-fill" id="sb1"></div></div>
+            <div class="strength-bar"><div class="strength-fill" id="sb2"></div></div>
+            <div class="strength-bar"><div class="strength-fill" id="sb3"></div></div>
+            <div class="strength-bar"><div class="strength-fill" id="sb4"></div></div>
+          </div>
+          <p class="text-xs text-teak-400 mt-1" id="strengthLabel">กรอกรหัสผ่านเพื่อตรวจสอบความปลอดภัย</p>
+          <div class="field-error" id="err-password">⚠ รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร</div>
+        </div>
+
+        <!-- Confirm -->
+        <div class="mb-5">
+          <label class="field-label">ยืนยันรหัสผ่าน</label>
+          <div class="relative">
+            <input type="password" id="reg-confirm" class="field-input pr-10" placeholder="กรอกรหัสผ่านอีกครั้ง" oninput="checkConfirm()">
+            <span class="pw-toggle" onclick="togglePw('reg-confirm',this)">👁</span>
+          </div>
+          <div class="field-error" id="err-confirm">⚠ รหัสผ่านไม่ตรงกัน</div>
+        </div>
+
+        <!-- Terms -->
+        <div class="flex items-start gap-2 mb-1">
+          <input type="checkbox" id="reg-terms" class="mt-1 w-4 h-4 shrink-0 accent-red-900">
+          <label for="reg-terms" class="text-sm text-teak-400 cursor-pointer">
+            ฉันยอมรับ <a href="#" class="text-lacquer-700 underline underline-offset-2">ข้อกำหนดการใช้งาน</a> และ <a href="#" class="text-lacquer-700 underline underline-offset-2">นโยบายความเป็นส่วนตัว</a>
+          </label>
+        </div>
+        <div class="field-error mb-5" id="err-terms">⚠ กรุณายอมรับข้อกำหนดก่อนสมัคร</div>
+
+        <button class="btn-submit bg-lacquer-700 hover:bg-lacquer-900 text-brass-300" onclick="submitRegister()" id="btnRegister">สร้างบัญชี</button>
+
+        <p class="text-center text-sm text-teak-400 mt-5">
+          มีบัญชีแล้ว? <button onclick="switchTab('login')" class="text-lacquer-700 font-semibold underline underline-offset-2">เข้าสู่ระบบ</button>
+        </p>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="formLogin" class="hidden">
+        <div class="mb-6">
+          <h1 class="font-display font-bold text-2xl text-teak-900 mb-1">ยินดีต้อนรับกลับ</h1>
+          <p class="text-sm text-teak-400">เข้าสู่ระบบเพื่อต่อบทเรียนของคุณ</p>
+        </div>
+
+        <!-- Quick login -->
+        <div class="bg-brass-100 border border-brass-300 rounded-xl p-4 mb-5">
+          <p class="text-xs font-semibold text-brass-700 mb-3 uppercase tracking-wide">ทดลองเข้าสู่ระบบ (Demo)</p>
+          <div class="flex flex-col gap-2">
+            <button onclick="quickLogin('general')" class="flex items-center gap-3 p-2.5 bg-white rounded-lg border border-brass-300 hover:border-lacquer-700 transition-colors text-left w-full">
+              <span class="text-lg">👤</span>
+              <div class="min-w-0">
+                <p class="text-sm font-semibold text-teak-900">ผู้ใช้ทั่วไป</p>
+                <p class="text-xs text-teak-400 truncate">napas.k@example.com</p>
+              </div>
+              <span class="ml-auto text-xs text-teak-300 shrink-0">กรอกอัตโนมัติ</span>
+            </button>
+            <button onclick="quickLogin('student')" class="flex items-center gap-3 p-2.5 bg-white rounded-lg border border-brass-300 hover:border-lacquer-700 transition-colors text-left w-full">
+              <span class="text-lg">🎵</span>
+              <div class="min-w-0">
+                <p class="text-sm font-semibold text-teak-900">นักเรียน</p>
+                <p class="text-xs text-teak-400 truncate">manee.j@example.com</p>
+              </div>
+              <span class="ml-auto text-xs text-teak-300 shrink-0">กรอกอัตโนมัติ</span>
+            </button>
+            <button onclick="quickLogin('teacher')" class="flex items-center gap-3 p-2.5 bg-white rounded-lg border border-brass-300 hover:border-lacquer-700 transition-colors text-left w-full">
+              <span class="text-lg">🎓</span>
+              <div class="min-w-0">
+                <p class="text-sm font-semibold text-teak-900">ครูผู้สอน</p>
+                <p class="text-xs text-teak-400 truncate">somchai.t@example.com</p>
+              </div>
+              <span class="ml-auto text-xs text-teak-300 shrink-0">กรอกอัตโนมัติ</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-4">
+          <label class="field-label">อีเมล</label>
+          <input type="email" id="login-email" class="field-input" placeholder="name@example.com" oninput="clearErr('err-login-email')">
+          <div class="field-error" id="err-login-email">⚠ กรอกอีเมลด้วยครับ</div>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-2">
+          <div class="flex items-center justify-between mb-1">
+            <label class="field-label mb-0">รหัสผ่าน</label>
+            <button class="text-xs text-lacquer-700 underline underline-offset-2" onclick="showToast('ระบบรีเซ็ตรหัสผ่านอยู่ระหว่างพัฒนา','ℹ')">ลืมรหัสผ่าน?</button>
+          </div>
+          <div class="relative">
+            <input type="password" id="login-password" class="field-input pr-10" placeholder="รหัสผ่านของคุณ"
+                   oninput="clearErr('err-login-password')"
+                   onkeydown="if(event.key==='Enter')submitLogin()">
+            <span class="pw-toggle" onclick="togglePw('login-password',this)">👁</span>
+          </div>
+          <div class="field-error" id="err-login-password">⚠ กรอกรหัสผ่านด้วยครับ</div>
+        </div>
+
+        <div class="flex items-center gap-2 mb-6 mt-3">
+          <input type="checkbox" id="remember" class="w-4 h-4 accent-red-900">
+          <label for="remember" class="text-sm text-teak-400 cursor-pointer">จดจำการเข้าสู่ระบบ</label>
+        </div>
+
+        <button class="btn-submit bg-lacquer-700 hover:bg-lacquer-900 text-brass-300" onclick="submitLogin()" id="btnLogin">เข้าสู่ระบบ</button>
+
+        <div class="flex items-center gap-3 my-5">
+          <div class="flex-1 border-t border-teak-100"></div>
+          <span class="text-xs text-teak-300 shrink-0">หรือ</span>
+          <div class="flex-1 border-t border-teak-100"></div>
+        </div>
+
+        <button class="w-full flex items-center justify-center gap-3 border border-teak-100 hover:border-teak-300 rounded-lg py-3 text-sm font-medium text-teak-500 transition-colors">
+          <span class="text-lg">🌐</span> เข้าสู่ระบบด้วย Google
+        </button>
+
+        <p class="text-center text-sm text-teak-400 mt-5">
+          ยังไม่มีบัญชี? <button onclick="switchTab('register')" class="text-lacquer-700 font-semibold underline underline-offset-2">สมัครฟรี</button>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- Toast -->
+<div id="toast"><span id="toastIcon">✓</span><span id="toastMsg"></span></div>
+
+<!-- Success screen -->
+<div id="successScreen">
+  <div class="text-center max-w-sm mx-auto px-6">
+    <div class="w-20 h-20 bg-lacquer-700 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-5 shadow-lg">🎵</div>
+    <h2 class="font-display font-bold text-2xl text-teak-900 mb-2" id="successTitle">เข้าสู่ระบบสำเร็จ!</h2>
+    <p class="text-teak-400 text-sm mb-1" id="successSub"></p>
+    <p class="text-xs text-teak-300 mb-6" id="successRole"></p>
+    <div class="w-full bg-teak-100 rounded-full h-1.5 mb-4">
+      <div id="progressBar" class="bg-lacquer-700 h-1.5 rounded-full transition-all duration-[2500ms]" style="width:0%"></div>
+    </div>
+    <p class="text-xs text-teak-300">กำลังนำทางไปยัง Dashboard...</p>
+  </div>
+</div>
+
+<script>
+// Deco wave
+(function(){
+  const w=document.getElementById('decoWave');
+  [12,24,36,20,48,30,42,18,36,52,24,40,16,32,44].forEach((h,i)=>{
+    const s=document.createElement('span');
+    s.style.height=h+'px'; s.style.opacity=0.25+(h/52)*0.5;
+    if(i%4===0)s.style.background='#5C1414';
+    w.appendChild(s);
+  });
+})();
+
+// Tab switch
+let currentTab='register';
+function switchTab(tab){
+  currentTab=tab;
+  const ind=document.getElementById('tabIndicator');
+  if(tab==='register'){
+    ind.style.left='0';ind.style.width='50%';
+    document.getElementById('tab-register').className='flex-1 pb-3 text-base font-semibold text-lacquer-700 transition-colors';
+    document.getElementById('tab-login').className='flex-1 pb-3 text-base font-semibold text-teak-400 transition-colors';
+    document.getElementById('formRegister').classList.remove('hidden');
+    document.getElementById('formLogin').classList.add('hidden');
+  }else{
+    ind.style.left='50%';ind.style.width='50%';
+    document.getElementById('tab-login').className='flex-1 pb-3 text-base font-semibold text-lacquer-700 transition-colors';
+    document.getElementById('tab-register').className='flex-1 pb-3 text-base font-semibold text-teak-400 transition-colors';
+    document.getElementById('formLogin').classList.remove('hidden');
+    document.getElementById('formRegister').classList.add('hidden');
+  }
+}
+
+// Role
+let selectedRole='general';
+function selectRole(r){
+  selectedRole=r;
+  document.getElementById('reg-role').value=r;
+  ['general','student','teacher'].forEach(x=>document.getElementById('role-'+x).classList.toggle('selected',x===r));
+}
+
+// Toggle password
+function togglePw(id,el){
+  const inp=document.getElementById(id);
+  inp.type=inp.type==='password'?'text':'password';
+  el.textContent=inp.type==='password'?'👁':'🙈';
+}
+
+// Validation
+function showErr(id,msg){
+  const el=document.getElementById(id);
+  if(msg)el.textContent='⚠ '+msg;
+  el.classList.add('show');
+}
+function clearErr(id){document.getElementById(id).classList.remove('show');}
+function validateEmail(inputId,errId){
+  const val=document.getElementById(inputId).value;
+  const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+  if(val&&!ok)showErr(errId,'รูปแบบอีเมลไม่ถูกต้อง');
+  else clearErr(errId);
+  return ok||!val;
+}
+
+// Password strength
+function checkStrength(){
+  const pw=document.getElementById('reg-password').value;
+  clearErr('err-password');
+  let score=0;
+  if(pw.length>=8)score++;
+  if(/[A-Z]/.test(pw))score++;
+  if(/[0-9]/.test(pw))score++;
+  if(/[^A-Za-z0-9]/.test(pw))score++;
+  const colors=['#8A2424','#D68910','#C5A059','#4A7A5A'];
+  const labels=['อ่อนมาก','อ่อน','ดีพอใช้','แข็งแกร่ง'];
+  for(let i=1;i<=4;i++){
+    const f=document.getElementById('sb'+i);
+    f.style.width=i<=score?'100%':'0%';
+    f.style.background=i<=score?colors[score-1]:'#D9CFC2';
+  }
+  document.getElementById('strengthLabel').textContent=pw.length===0?'กรอกรหัสผ่านเพื่อตรวจสอบความปลอดภัย':'ระดับ: '+(labels[score-1]||'อ่อนมาก');
+}
+function checkConfirm(){
+  const pw=document.getElementById('reg-password').value;
+  const cf=document.getElementById('reg-confirm').value;
+  if(cf&&pw!==cf)showErr('err-confirm','รหัสผ่านไม่ตรงกัน');
+  else clearErr('err-confirm');
+}
+
+// Toast
+function showToast(msg,icon='✓'){
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  document.getElementById('toastIcon').textContent=icon;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// Quick login
+const demoAccounts={
+  general:{email:'napas.k@example.com',pw:'password123',name:'นภัส',role:'ผู้ใช้ทั่วไป',redirect:'หน้าแคตาล็อกเครื่องดนตรี'},
+  student:{email:'manee.j@example.com',pw:'password123',name:'มานี',role:'นักเรียน',redirect:'Dashboard นักเรียน'},
+  teacher:{email:'somchai.t@example.com',pw:'password123',name:'สมชาย',role:'ครูผู้สอน',redirect:'Dashboard ครู'},
+};
+function quickLogin(type){
+  const acc=demoAccounts[type];
+  document.getElementById('login-email').value=acc.email;
+  document.getElementById('login-password').value=acc.pw;
+  clearErr('err-login-email');clearErr('err-login-password');
+  showToast('กรอกข้อมูลบัญชี '+acc.role+' แล้ว','✓');
+}
+
+// Submit register
+function submitRegister(){
+  let ok=true;
+  const fn=document.getElementById('reg-firstname').value.trim();
+  const ln=document.getElementById('reg-lastname').value.trim();
+  const em=document.getElementById('reg-email').value.trim();
+  const pw=document.getElementById('reg-password').value;
+  const cf=document.getElementById('reg-confirm').value;
+  const terms=document.getElementById('reg-terms').checked;
+  if(!fn){showErr('err-firstname','กรอกชื่อด้วยครับ');ok=false;}
+  if(!ln){showErr('err-lastname','กรอกนามสกุลด้วยครับ');ok=false;}
+  if(!em||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){showErr('err-email','รูปแบบอีเมลไม่ถูกต้อง');ok=false;}
+  if(pw.length<8){showErr('err-password','รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร');ok=false;}
+  if(pw!==cf){showErr('err-confirm','รหัสผ่านไม่ตรงกัน');ok=false;}
+  if(!terms){showErr('err-terms','กรุณายอมรับข้อกำหนดก่อนสมัคร');ok=false;}
+  if(!ok)return;
+  const btn=document.getElementById('btnRegister');
+  btn.textContent='กำลังสร้างบัญชี...';btn.disabled=true;
+  setTimeout(()=>{
+    btn.textContent='สร้างบัญชี';btn.disabled=false;
+    const roleLabels={general:'ผู้ใช้ทั่วไป',student:'นักเรียน',teacher:'ครูผู้สอน'};
+    const roleRedirects={general:'หน้าแคตาล็อก',student:'Dashboard นักเรียน',teacher:'Dashboard ครู'};
+    redirectSuccess(fn,roleLabels[selectedRole],roleRedirects[selectedRole],selectedRole);
+  },1400);
+}
+
+// Submit login
+function submitLogin(){
+  let ok=true;
+  const em=document.getElementById('login-email').value.trim();
+  const pw=document.getElementById('login-password').value;
+  if(!em){showErr('err-login-email','กรอกอีเมลด้วยครับ');ok=false;}
+  if(!pw){showErr('err-login-password','กรอกรหัสผ่านด้วยครับ');ok=false;}
+  if(!ok)return;
+  const btn=document.getElementById('btnLogin');
+  btn.textContent='กำลังตรวจสอบ...';btn.disabled=true;
+  setTimeout(()=>{
+    btn.textContent='เข้าสู่ระบบ';btn.disabled=false;
+    const match=Object.values(demoAccounts).find(a=>a.email===em&&a.pw===pw);
+    const acc=match||demoAccounts.general;
+    const roleKey=match?Object.keys(demoAccounts).find(k=>demoAccounts[k]===match):'general';
+    redirectSuccess(acc.name,acc.role,acc.redirect,roleKey);
+  },1200);
+}
+
+// Success screen + redirect
+function redirectSuccess(name,role,destination,roleKey){
+  const screen=document.getElementById('successScreen');
+  document.getElementById('successTitle').textContent='ยินดีต้อนรับ '+name+'!';
+  document.getElementById('successSub').textContent='เข้าสู่ระบบในฐานะ "'+role+'" สำเร็จ';
+  document.getElementById('successRole').textContent='→ กำลังนำทางไปยัง: '+destination;
+  screen.style.display='flex';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    document.getElementById('progressBar').style.width='100%';
+  }));
+  setTimeout(()=>{
+    if(roleKey==='student'||roleKey==='teacher'){
+      window.location.href='page3-dashboard.html';
+    }else{
+      window.location.href='page1-instruments.html';
+    }
+  },2800);
+}
+</script>
+</body>
+</html>
